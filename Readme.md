@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Александра Ларина](https://up.htmlacademy.ru/javascript/11/user/422049).
-* Наставник: `Неизвестно`.
+* Наставник: [Олег Петров](https://htmlacademy.ru/profile/fyvfyv).
 
 ---
 
