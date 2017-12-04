@@ -13,18 +13,11 @@ var APARTMENT_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator',
 
 var mapCardTemplate = document.querySelector('template').content.querySelector('article.map__card');
 
+function getFeature(feature) {
+  var liElem = document.createElement('li');
+  liElem.classList.add('feature', 'feature--' + feature);
 
-function getFeatureElem(liElemClass) {
-  var liElem = document.querySelector('template').content.querySelectorAll('.feature');
-  // убийство всего лишнего в template
-  for (var i = 0; i < liElem.length; i++) {
-    liElem[i].classList.add('visuallyhidden');
-  }
-  // создание li элемента фичи
-  var featureLi = document.createElement('li');
-  // навешивание фиче нужного класса
-  featureLi.classList.add('feature feature--' + liElemClass);
-  // console.log(featureLi);
+  return liElem;
 }
 
 function getRandFromRange(min, max) {
@@ -98,10 +91,11 @@ var renderCard = function (ad) {
 
   // не знаю, как сделать вывод в элементы списка
   // mapCardElement.querySelector('popup__features').innerHTML = ad.offer.features;
-  for (var i = 0; i < ad.offer.features.length; i++) {
-    mapCardElement.querySelector('ul').appendChild(getFeatureElem(ad.offer.features[i]));
-  }
-  // console.log(ad.offer.features);
+  var ulElem = mapCardElement.querySelector('.popup__features');
+  ad.offer.features = function (feature) {
+    ulElem.appendChild(getFeature(feature));
+    console.log(getFeature(feature));
+  };
   mapCardElement.querySelector('.popup__features + p').textContent = ad.offer.description;
   return mapCardElement;
 };
