@@ -3,9 +3,29 @@
 var AD_NUMBER = 8;
 var AD_TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var APARTMENT_TYPE = ['flat', 'house', 'bungalo'];
+var ApartmentTypeParams = {
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalo: 'Бунгало'
+};
 var CHECK_IN_OUT_TIME = ['12:00', '13:00', '14:00'];
 var APARTMENT_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+
 var mapCardTemplate = document.querySelector('template').content.querySelector('article.map__card');
+
+
+function getFeatureElem(liElemClass) {
+  var liElem = document.querySelector('template').content.querySelectorAll('.feature');
+  // убийство всего лишнего в template
+  for (var i = 0; i < liElem.length; i++) {
+    liElem[i].classList.add('visuallyhidden');
+  }
+  // создание li элемента фичи
+  var featureLi = document.createElement('li');
+  // навешивание фиче нужного класса
+  featureLi.classList.add('feature feature--' + liElemClass);
+  // console.log(featureLi);
+}
 
 function getRandFromRange(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -14,24 +34,24 @@ function getRandFromRange(min, max) {
 function chooseFeatures(featuresNumber) {
   var featuresArray = [];
   for (var i = 0; i < featuresNumber; i++) {
-    var j = getRandFromRange(0, APARTMENT_FEATURES.length);
-    featuresArray[i] = APARTMENT_FEATURES[j];
+    var randomIndex = getRandFromRange(0, APARTMENT_FEATURES.length);
+    featuresArray[i] = APARTMENT_FEATURES[randomIndex];
   }
   return featuresArray;
 }
 
 function createAd(index) {
-  var XCoord = getRandFromRange(300, 900);
-  var YCoord = getRandFromRange(100, 500);
+  var xCoord = getRandFromRange(300, 900);
+  var yCoord = getRandFromRange(100, 500);
   return {
     author: {
       avatar: 'img/avatars/user0' + (index + 1) + '.png'
     },
     offer: {
       title: AD_TITLES[index],
-      adress: XCoord + ', ' + YCoord,
+      adress: xCoord + ', ' + yCoord,
       price: getRandFromRange(1000, 1000000),
-      type: APARTMENT_TYPE[1],
+      type: APARTMENT_TYPE[getRandFromRange(0, APARTMENT_TYPE.length)],
       rooms: getRandFromRange(1, 5),
       guests: getRandFromRange(1, 20),
       checkin: CHECK_IN_OUT_TIME[getRandFromRange(0, CHECK_IN_OUT_TIME.length - 1)],
@@ -41,8 +61,8 @@ function createAd(index) {
       photos: []
     },
     location: {
-      x: XCoord,
-      y: YCoord
+      x: xCoord,
+      y: yCoord
     }
   };
 }
@@ -72,17 +92,16 @@ var renderCard = function (ad) {
   mapCardElement.querySelector('h3').textContent = ad.offer.title;
   mapCardElement.querySelector('small').textContent = ad.offer.adress;
   mapCardElement.querySelector('.popup__price').textContent = ad.offer.price + '\t\u20BD/ночь';
-  mapCardElement.querySelector('h4').textContent = ad.offer.type;
+  mapCardElement.querySelector('h4').textContent = ApartmentTypeParams[ad.offer.type];
   mapCardElement.querySelector('h4 + p').textContent = ad.offer.rooms + ' для ' + ad.offer.guests + ' гостей';
-
-  // Так и не поняла, в чем проблема с nth-child, документацию прочла.
-  // В консоль выводится именно этот p
-  mapCardElement.querySelector('p:nth-child(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
-  console.log(mapCardElement.querySelector('p:nth-child(4)').textContent);
+  mapCardElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
 
   // не знаю, как сделать вывод в элементы списка
   // mapCardElement.querySelector('popup__features').innerHTML = ad.offer.features;
-
+  for (var i = 0; i < ad.offer.features.length; i++) {
+    mapCardElement.querySelector('ul').appendChild(getFeatureElem(ad.offer.features[i]));
+  }
+  // console.log(ad.offer.features);
   mapCardElement.querySelector('.popup__features + p').textContent = ad.offer.description;
   return mapCardElement;
 };
@@ -99,7 +118,6 @@ var userDialog = document.querySelector('.map');
 var mapPinsListElement = userDialog.querySelector('.map__pins');
 var mapPinTemplate = document.querySelector('template').content.querySelector('.map__pin');
 
-var map = userDialog.querySelector('.map');
 // var mapCardsListElement = map.insertBefore(createFragment(renderCard, advertismentArray), userDialog.querySelector('.map__filters-container'));
 // var mapCardElement = userDialog.querySelector('.map__filters-container');
 
@@ -108,9 +126,5 @@ var advertismentArray = createAdArray(AD_NUMBER);
 mapPinsListElement.appendChild(createFragment(renderPin, advertismentArray));
 // mapCardElement.appendChild(createFragment(renderCard, advertismentArray));
 
-// прочитала документацию insertBefore, но не понимаю, как конкретно здесь это работает
-// userDialog.querySelector('.map__filters-container') - это элемент перед которым хотим вставить
-// createFragment(renderCard, advertismentArray) - этот тот article, который хотим вставить
-// map - родитель обоих элементов
-map.insertBefore(createFragment(renderCard, advertismentArray), userDialog.querySelector('.map__filters-container'));
+userDialog.insertBefore(createFragment(renderCard, advertismentArray), userDialog.querySelector('.map__filters-container'));
 userDialog.classList.remove('map--faded');
