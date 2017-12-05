@@ -28,13 +28,33 @@ function getRandFromRange(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 // надо обдумать, как переделать функцию, т.к. в нынешней реализации фичи могут повторяться
-function chooseFeatures(featuresNumber) {
+/*function chooseFeatures(featuresNumber) {
   var featuresArray = [];
   for (var i = 0; i < featuresNumber; i++) {
     var randomIndex = getRandFromRange(0, AdParams.FEATURES.length);
     featuresArray[i] = AdParams.FEATURES[randomIndex];
+    for (var j = 0; j < i; j++) {
+      console.log(featuresArray[j]);
+    }
+    // featuresArray[i] = AdParams.FEATURES[randomIndex];
   }
   return featuresArray;
+}*/
+
+function chooseFeatures(length, array, unique) {
+  var newArr = [];
+
+  while (newArr.length < length) {
+    var elem = array[getRandFromRange(0, array.length - 1)];
+
+    if (unique && newArr.indexOf(elem) !== -1) {
+      continue;
+    } else {
+      array.push(elem);
+    }
+  }
+
+  return newArr;
 }
 
 function createAd(index) {
@@ -53,7 +73,7 @@ function createAd(index) {
       guests: getRandFromRange(1, 20),
       checkin: AdParams.CHECK_IN_OUT_TIME[getRandFromRange(0, AdParams.CHECK_IN_OUT_TIME.length - 1)],
       checkout: AdParams.CHECK_IN_OUT_TIME[getRandFromRange(0, AdParams.CHECK_IN_OUT_TIME.length - 1)],
-      features: chooseFeatures(getRandFromRange(0, AdParams.FEATURES.length)),
+      features: chooseFeatures(2, AdParams.FEATURES, true),
       description: '',
       photos: []
     },
