@@ -27,19 +27,6 @@ function getFeature(feature) {
 function getRandFromRange(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
-// надо обдумать, как переделать функцию, т.к. в нынешней реализации фичи могут повторяться
-/*function chooseFeatures(featuresNumber) {
-  var featuresArray = [];
-  for (var i = 0; i < featuresNumber; i++) {
-    var randomIndex = getRandFromRange(0, AdParams.FEATURES.length);
-    featuresArray[i] = AdParams.FEATURES[randomIndex];
-    for (var j = 0; j < i; j++) {
-      console.log(featuresArray[j]);
-    }
-    // featuresArray[i] = AdParams.FEATURES[randomIndex];
-  }
-  return featuresArray;
-}*/
 
 function chooseFeatures(length, array, unique) {
   var newArr = [];
@@ -50,7 +37,7 @@ function chooseFeatures(length, array, unique) {
     if (unique && newArr.indexOf(elem) !== -1) {
       continue;
     } else {
-      array.push(elem);
+      newArr.push(elem);
     }
   }
 
@@ -109,7 +96,7 @@ var renderCard = function (ad) {
   mapCardElement.querySelector('small').textContent = ad.offer.adress;
   mapCardElement.querySelector('.popup__price').textContent = ad.offer.price + '\t\u20BD/ночь';
   mapCardElement.querySelector('h4').textContent = ApartmentTypeParams[ad.offer.type];
-  mapCardElement.querySelector('h4 + p').textContent = ad.offer.rooms + ' для ' + ad.offer.guests + ' гостей';
+  mapCardElement.querySelector('h4 + p').textContent = ad.offer.rooms + ' комнат для ' + ad.offer.guests + ' гостей';
   mapCardElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
   var ulElem = mapCardElement.querySelector('.popup__features');
   ad.offer.features.forEach(function (feature) {
