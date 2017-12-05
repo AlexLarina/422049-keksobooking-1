@@ -92,9 +92,9 @@ var renderCard = function (ad) {
   mapCardElement.querySelector('h4 + p').textContent = ad.offer.rooms + ' для ' + ad.offer.guests + ' гостей';
   mapCardElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
   var ulElem = mapCardElement.querySelector('.popup__features');
-  ad.offer.features = function (feature) {
+  ad.offer.features.forEach(function (feature) {
     ulElem.appendChild(getFeature(feature));
-  };
+  });
   mapCardElement.querySelector('.popup__features + p').textContent = ad.offer.description;
   return mapCardElement;
 };
