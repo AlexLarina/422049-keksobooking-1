@@ -116,7 +116,35 @@ function createFragment(render, adArray) {
 
 var advertismentArray = createAdArray(AD_NUMBER);
 
-mapPinsListElement.appendChild(createFragment(renderPin, advertismentArray));
-userDialog.insertBefore(renderCard(advertismentArray[0]), userDialog.querySelector('.map__filters-container'));
+// mapPinsListElement.appendChild(createFragment(renderPin, advertismentArray));
+// userDialog.insertBefore(renderCard(advertismentArray[0]), userDialog.querySelector('.map__filters-container'));
 
 userDialog.classList.remove('map--faded');
+
+userDialog.classList.add('map--faded');
+var form = document.querySelector('.notice__form');
+form.classList.add('notice__form--disabled');
+var formFieldset = form.querySelectorAll('fieldset');
+formFieldset.forEach(function (item) {
+  item.setAttribute('disabled', 'disabled');
+});
+
+var mainPin = document.querySelector('.map__pin--main');
+mainPin.addEventListener('mouseup', function () {
+  userDialog.classList.remove('map--faded');
+  mapPinsListElement.appendChild(createFragment(renderPin, advertismentArray));
+  // не знаю , как передать нужную карточку для отрисовки при нажатии на пин
+  // принципиально нет идей, как это должно работать :(
+  var clickHandler = function (renderPin) {
+    console.log(renderPin);
+  }
+  form.classList.remove('notice__form--disabled');
+  formFieldset.forEach(function (item) {
+    item.removeAttribute('disabled', 'disabled');
+  });
+
+  var mapPin = document.querySelectorAll('.map__pin');
+  mapPin.forEach(function (item) {
+    item.addEventListener('click', clickHandler);
+  });
+});
