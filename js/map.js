@@ -60,7 +60,7 @@ function createAd(index) {
       guests: getRandFromRange(1, 20),
       checkin: AdParams.CHECK_IN_OUT_TIME[getRandFromRange(0, AdParams.CHECK_IN_OUT_TIME.length - 1)],
       checkout: AdParams.CHECK_IN_OUT_TIME[getRandFromRange(0, AdParams.CHECK_IN_OUT_TIME.length - 1)],
-      features: chooseFeatures(2, AdParams.FEATURES, true),
+      features: chooseFeatures(getRandFromRange(0, AdParams.FEATURES.length), AdParams.FEATURES, true),
       description: '',
       photos: []
     },
