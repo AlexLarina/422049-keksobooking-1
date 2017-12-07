@@ -99,7 +99,6 @@ var renderPin = function (ad) {
 
 var renderCard = function (ad) {
   var mapCardElement = mapCardTemplate.cloneNode(true);
-  // console.log(popupClose);
   mapCardElement.querySelector('.popup__avatar').setAttribute('src', '' + ad.author.avatar + '');
   mapCardElement.querySelector('h3').textContent = ad.offer.title;
   mapCardElement.querySelector('small').textContent = ad.offer.adress;
@@ -135,12 +134,11 @@ var pinClickHandler = function (evt) {
   currentPin.classList.add('map__pin--active');
   var pinId = evt.currentTarget.dataset.cardId;
   userDialog.insertBefore(renderCard(advertismentArray[pinId - 1]), userDialog.querySelector('.map__filters-container'));
-  // var closeCard =
 };
 
 var popupCloseHandler = function () {
   var popup = document.querySelector('.popup');
-  popup.classList.add('visuallyhidden');
+  popup.remove();
 };
 
 var deactivatePin = function () {
