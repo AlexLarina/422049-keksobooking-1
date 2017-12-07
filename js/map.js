@@ -23,7 +23,7 @@ var advertismentArray = createAdArray(AD_NUMBER);
 var ENTER_KEYCODE = 13;
 var ESC_KEYCODE = 27;
 
-// отрисовка пинов и карточек объявлений
+// создание DOM-объъектов пинов и карточек объявлений
 function getFeature(feature) {
   var liElem = document.createElement('li');
   liElem.classList.add('feature', 'feature--' + feature);
@@ -86,6 +86,24 @@ function createAdArray(adNumber) {
   return adArray;
 }
 
+
+function createFragment(render, adArray) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < AD_NUMBER; i++) {
+    fragment.appendChild(render(adArray[i]));
+  }
+  return fragment;
+}
+
+function deactivateForm() {
+  form.classList.add('notice__form--disabled');
+  formFieldset.forEach(function (item) {
+    item.setAttribute('disabled', 'disabled');
+  });
+}
+
+// рендеринг
+
 var renderPin = function (ad) {
   var mapPinElement = mapPinTemplate.cloneNode(true);
 
@@ -117,17 +135,9 @@ var renderCard = function (ad) {
   var popupClose = mapCardElement.querySelector('.popup__close');
   popupClose.addEventListener('click', popupCloseHandler);
   popupClose.addEventListener('click', deactivatePin);
-  popupClose.addEventListener('keydown', keyPopupCloseHandler);
+  popupClose.addEventListener('keydown', keyPopupInFocusCloseHandler);
   return mapCardElement;
 };
-
-function createFragment(render, adArray) {
-  var fragment = document.createDocumentFragment();
-  for (var i = 0; i < AD_NUMBER; i++) {
-    fragment.appendChild(render(adArray[i]));
-  }
-  return fragment;
-}
 
 // обработчики
 
@@ -151,13 +161,6 @@ var deactivatePin = function () {
   }
 };
 
-function deactivateForm() {
-  form.classList.add('notice__form--disabled');
-  formFieldset.forEach(function (item) {
-    item.setAttribute('disabled', 'disabled');
-  });
-}
-
 var mapActivate = function () {
   userDialog.classList.remove('map--faded');
   mapPinsListElement.appendChild(createFragment(renderPin, advertismentArray));
@@ -176,8 +179,6 @@ var mouseMainPinHandler = function () {
 };
 
 var keyMainPinHandler = function (evt) {
-  // событие нажатия на кнопку никак не прослушивается, без идей почему
-  console.log(evt);
   if (evt.keyCode === ENTER_KEYCODE) {
     mapActivate();
     formActivate();
@@ -191,9 +192,16 @@ var keyPopupCloseHandler = function (evt) {
   }
 };
 
+var keyPopupInFocusCloseHandler = function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    popupCloseHandler();
+    deactivatePin();
+  }
+};
+
 // вызовы
 deactivateForm();
-/* mainPin.addEventListener('mouseup', mapActivate);
-mainPin.addEventListener('mouseup', formActivate);*/
 mainPin.addEventListener('mouseup', mouseMainPinHandler);
 mainPin.addEventListener('keydown', keyMainPinHandler);
+document.addEventListener('keydown', keyPopupCloseHandler);
+document.addEventListener('keydown', keyMainPinHandler);
