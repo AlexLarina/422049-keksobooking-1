@@ -20,6 +20,8 @@ var form = document.querySelector('.notice__form');
 var formFieldset = form.querySelectorAll('fieldset');
 var mainPin = document.querySelector('.map__pin--main');
 var advertismentArray = createAdArray(AD_NUMBER);
+var ENTER_KEYCODE = 13;
+var ESC_KEYCODE = 27;
 
 // отрисовка пинов и карточек объявлений
 function getFeature(feature) {
@@ -115,6 +117,7 @@ var renderCard = function (ad) {
   var popupClose = mapCardElement.querySelector('.popup__close');
   popupClose.addEventListener('click', popupCloseHandler);
   popupClose.addEventListener('click', deactivatePin);
+  popupClose.addEventListener('keydown', keyPopupCloseHandler);
   return mapCardElement;
 };
 
@@ -167,7 +170,30 @@ var formActivate = function () {
   });
 };
 
+var mouseMainPinHandler = function () {
+  mapActivate();
+  formActivate();
+};
+
+var keyMainPinHandler = function (evt) {
+  // событие нажатия на кнопку никак не прослушивается, без идей почему
+  console.log(evt);
+  if (evt.keyCode === ENTER_KEYCODE) {
+    mapActivate();
+    formActivate();
+  }
+};
+
+var keyPopupCloseHandler = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    popupCloseHandler();
+    deactivatePin();
+  }
+};
+
 // вызовы
 deactivateForm();
-mainPin.addEventListener('mouseup', mapActivate);
-mainPin.addEventListener('mouseup', formActivate);
+/* mainPin.addEventListener('mouseup', mapActivate);
+mainPin.addEventListener('mouseup', formActivate);*/
+mainPin.addEventListener('mouseup', mouseMainPinHandler);
+mainPin.addEventListener('keydown', keyMainPinHandler);
