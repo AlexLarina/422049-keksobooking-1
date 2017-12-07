@@ -86,7 +86,6 @@ function createAdArray(adNumber) {
   return adArray;
 }
 
-
 function createFragment(render, adArray) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < AD_NUMBER; i++) {
@@ -111,7 +110,7 @@ var renderPin = function (ad) {
   mapPinElement.querySelector('.map__pin img').setAttribute('src', ad.author.avatar);
   mapPinElement.dataset.cardId = parseInt(ad.author.avatar.split(/\D+/g)[1], 10);
   mapPinElement.addEventListener('click', function (evt) {
-    pinClickHandler(evt);
+    pinClickHandler(evt, ad);
   });
 
   return mapPinElement;
@@ -133,20 +132,18 @@ var renderCard = function (ad) {
   mapCardElement.querySelector('.popup__features + p').textContent = ad.offer.description;
 
   var popupClose = mapCardElement.querySelector('.popup__close');
-  popupClose.addEventListener('click', popupCloseHandler);
-  popupClose.addEventListener('click', deactivatePin);
+  popupClose.addEventListener('click', mousePopupCloseHandler);
   popupClose.addEventListener('keydown', keyPopupInFocusCloseHandler);
   return mapCardElement;
 };
 
 // обработчики
 
-var pinClickHandler = function (evt) {
+var pinClickHandler = function (evt, ad) {
   deactivatePin(evt);
   var currentPin = evt.currentTarget;
   currentPin.classList.add('map__pin--active');
-  var pinId = evt.currentTarget.dataset.cardId;
-  userDialog.insertBefore(renderCard(advertismentArray[pinId - 1]), userDialog.querySelector('.map__filters-container'));
+  userDialog.insertBefore(renderCard(ad), userDialog.querySelector('.map__filters-container'));
 };
 
 var popupCloseHandler = function () {
@@ -183,6 +180,11 @@ var keyMainPinHandler = function (evt) {
     mapActivate();
     formActivate();
   }
+};
+
+var mousePopupCloseHandler = function () {
+  popupCloseHandler();
+  deactivatePin();
 };
 
 var keyPopupCloseHandler = function (evt) {
