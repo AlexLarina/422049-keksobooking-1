@@ -16,7 +16,12 @@ var mapCardTemplate = document.querySelector('template').content.querySelector('
 var userDialog = document.querySelector('.map');
 var mapPinsListElement = userDialog.querySelector('.map__pins');
 var mapPinTemplate = document.querySelector('template').content.querySelector('.map__pin');
+var form = document.querySelector('.notice__form');
+var formFieldset = form.querySelectorAll('fieldset');
+var mainPin = document.querySelector('.map__pin--main');
+var advertismentArray = createAdArray(AD_NUMBER);
 
+// отрисовка пинов и карточек объявлений
 function getFeature(feature) {
   var liElem = document.createElement('li');
   liElem.classList.add('feature', 'feature--' + feature);
@@ -60,7 +65,7 @@ function createAd(index) {
       guests: getRandFromRange(1, 20),
       checkin: AdParams.CHECK_IN_OUT_TIME[getRandFromRange(0, AdParams.CHECK_IN_OUT_TIME.length - 1)],
       checkout: AdParams.CHECK_IN_OUT_TIME[getRandFromRange(0, AdParams.CHECK_IN_OUT_TIME.length - 1)],
-      features: chooseFeatures(2, AdParams.FEATURES, true),
+      features: chooseFeatures(getRandFromRange(0, AdParams.FEATURES.length), AdParams.FEATURES, true),
       description: '',
       photos: []
     },
@@ -84,13 +89,17 @@ var renderPin = function (ad) {
 
   mapPinElement.setAttribute('style', 'left: ' + ad.location.x + 'px; ' + 'top: ' + ad.location.y + 'px; ');
   mapPinElement.querySelector('.map__pin img').setAttribute('src', ad.author.avatar);
+  mapPinElement.dataset.cardId = parseInt(ad.author.avatar.split(/\D+/g)[1], 10);
+  mapPinElement.addEventListener('click', function (evt) {
+    pinClickHandler(evt);
+  });
 
   return mapPinElement;
 };
 
 var renderCard = function (ad) {
   var mapCardElement = mapCardTemplate.cloneNode(true);
-
+  // console.log(popupClose);
   mapCardElement.querySelector('.popup__avatar').setAttribute('src', '' + ad.author.avatar + '');
   mapCardElement.querySelector('h3').textContent = ad.offer.title;
   mapCardElement.querySelector('small').textContent = ad.offer.adress;
@@ -103,6 +112,10 @@ var renderCard = function (ad) {
     ulElem.appendChild(getFeature(feature));
   });
   mapCardElement.querySelector('.popup__features + p').textContent = ad.offer.description;
+
+  var popupClose = mapCardElement.querySelector('.popup__close');
+  popupClose.addEventListener('click', popupCloseHandler);
+  popupClose.addEventListener('click', deactivatePin);
   return mapCardElement;
 };
 
@@ -114,37 +127,49 @@ function createFragment(render, adArray) {
   return fragment;
 }
 
-var advertismentArray = createAdArray(AD_NUMBER);
+// обработчики
 
-// mapPinsListElement.appendChild(createFragment(renderPin, advertismentArray));
-// userDialog.insertBefore(renderCard(advertismentArray[0]), userDialog.querySelector('.map__filters-container'));
+var pinClickHandler = function (evt) {
+  deactivatePin(evt);
+  var currentPin = evt.currentTarget;
+  currentPin.classList.add('map__pin--active');
+  var pinId = evt.currentTarget.dataset.cardId;
+  userDialog.insertBefore(renderCard(advertismentArray[pinId - 1]), userDialog.querySelector('.map__filters-container'));
+  // var closeCard =
+};
 
-userDialog.classList.remove('map--faded');
+var popupCloseHandler = function () {
+  var popup = document.querySelector('.popup');
+  popup.classList.add('visuallyhidden');
+};
 
-userDialog.classList.add('map--faded');
-var form = document.querySelector('.notice__form');
-form.classList.add('notice__form--disabled');
-var formFieldset = form.querySelectorAll('fieldset');
-formFieldset.forEach(function (item) {
-  item.setAttribute('disabled', 'disabled');
-});
+var deactivatePin = function () {
+  var activePin = document.querySelector('.map__pin--active');
+  if (activePin) {
+    activePin.classList.remove('map__pin--active');
+  }
+};
 
-var mainPin = document.querySelector('.map__pin--main');
-mainPin.addEventListener('mouseup', function () {
+function deactivateForm() {
+  form.classList.add('notice__form--disabled');
+  formFieldset.forEach(function (item) {
+    item.setAttribute('disabled', 'disabled');
+  });
+}
+
+var mapActivate = function () {
   userDialog.classList.remove('map--faded');
   mapPinsListElement.appendChild(createFragment(renderPin, advertismentArray));
-  // не знаю , как передать нужную карточку для отрисовки при нажатии на пин
-  // принципиально нет идей, как это должно работать :(
-  var clickHandler = function (renderPin) {
-    console.log(renderPin);
-  }
+};
+
+var formActivate = function () {
   form.classList.remove('notice__form--disabled');
   formFieldset.forEach(function (item) {
     item.removeAttribute('disabled', 'disabled');
   });
+};
 
-  var mapPin = document.querySelectorAll('.map__pin');
-  mapPin.forEach(function (item) {
-    item.addEventListener('click', clickHandler);
-  });
-});
+// вызовы
+deactivateForm();
+mainPin.addEventListener('mouseup', mapActivate);
+mainPin.addEventListener('mouseup', formActivate);
