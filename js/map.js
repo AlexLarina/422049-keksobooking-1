@@ -19,7 +19,6 @@ var mapPinTemplate = document.querySelector('template').content.querySelector('.
 var form = document.querySelector('.notice__form');
 var formFieldset = form.querySelectorAll('fieldset');
 var mainPin = document.querySelector('.map__pin--main');
-var advertismentArray = createAdArray(AD_NUMBER);
 var ENTER_KEYCODE = 13;
 var ESC_KEYCODE = 27;
 
@@ -35,7 +34,7 @@ var getRandFromRange = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
-function chooseFeatures(length, array, unique) {
+var chooseFeatures = function (length, array, unique) {
   var newArr = [];
 
   while (newArr.length < length) {
@@ -49,9 +48,9 @@ function chooseFeatures(length, array, unique) {
   }
 
   return newArr;
-}
+};
 
-function createAd(index) {
+var createAd = function (index) {
   var xCoord = getRandFromRange(300, 900);
   var yCoord = getRandFromRange(100, 500);
   return {
@@ -76,30 +75,30 @@ function createAd(index) {
       y: yCoord
     }
   };
-}
+};
 
-function createAdArray(adNumber) {
+var createAdArray = function (adNumber) {
   var adArray = [];
   for (var i = 0; i < adNumber; i++) {
     adArray[i] = createAd(i);
   }
   return adArray;
-}
+};
 
-function createFragment(render, adArray) {
+var createFragment = function (render, adArray) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < AD_NUMBER; i++) {
     fragment.appendChild(render(adArray[i]));
   }
   return fragment;
-}
+};
 
-function deactivateForm() {
+var deactivateForm = function () {
   form.classList.add('notice__form--disabled');
   formFieldset.forEach(function (item) {
     item.setAttribute('disabled', 'disabled');
   });
-}
+};
 
 // рендеринг
 
@@ -204,6 +203,7 @@ var keyPopupInFocusCloseHandler = function (evt) {
 };
 
 // вызовы
+var advertismentArray = createAdArray(AD_NUMBER);
 deactivateForm();
 mainPin.addEventListener('mouseup', mouseMainPinHandler);
 mainPin.addEventListener('keydown', keyMainPinHandler);
