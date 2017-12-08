@@ -24,16 +24,16 @@ var ENTER_KEYCODE = 13;
 var ESC_KEYCODE = 27;
 
 // создание DOM-объъектов пинов и карточек объявлений
-function getFeature(feature) {
+var getFeature = function (feature) {
   var liElem = document.createElement('li');
   liElem.classList.add('feature', 'feature--' + feature);
 
   return liElem;
-}
+};
 
-function getRandFromRange(min, max) {
+var getRandFromRange = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
-}
+};
 
 function chooseFeatures(length, array, unique) {
   var newArr = [];
@@ -144,11 +144,13 @@ var pinClickHandler = function (evt, ad) {
   var currentPin = evt.currentTarget;
   currentPin.classList.add('map__pin--active');
   userDialog.insertBefore(renderCard(ad), userDialog.querySelector('.map__filters-container'));
+  // popupCloseHandler();
 };
 
 var popupCloseHandler = function () {
   var popup = document.querySelector('.popup');
-  popup.remove();
+  userDialog.removeChild(popup);
+  // popup.remove();
 };
 
 var deactivatePin = function () {
@@ -206,4 +208,4 @@ deactivateForm();
 mainPin.addEventListener('mouseup', mouseMainPinHandler);
 mainPin.addEventListener('keydown', keyMainPinHandler);
 document.addEventListener('keydown', keyPopupCloseHandler);
-document.addEventListener('keydown', keyMainPinHandler);
+mainPin.addEventListener('keydown', keyMainPinHandler);
