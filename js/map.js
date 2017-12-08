@@ -208,4 +208,3 @@ deactivateForm();
 mainPin.addEventListener('mouseup', mouseMainPinHandler);
 mainPin.addEventListener('keydown', keyMainPinHandler);
 document.addEventListener('keydown', keyPopupCloseHandler);
-mainPin.addEventListener('keydown', keyMainPinHandler);
