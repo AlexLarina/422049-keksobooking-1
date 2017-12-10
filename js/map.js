@@ -208,3 +208,111 @@ deactivateForm();
 mainPin.addEventListener('mouseup', mouseMainPinHandler);
 mainPin.addEventListener('keydown', keyMainPinHandler);
 document.addEventListener('keydown', keyPopupCloseHandler);
+
+// форма
+
+var initialAdress = document.querySelector('#address');
+initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
+var timein = document.querySelector('select[name="timein"]');
+var timeout = document.querySelector('select[name="timeout"]');
+
+// надо объединить эти хендлеры в один, но нет идей, как
+var timeinToTimeoutHandler = function (evt) {
+  timeout.value = evt.target.value;
+};
+var timeoutToTimeinHandler = function (evt) {
+  timein.value = evt.target.value;
+};
+timein.onchange = timeinToTimeoutHandler;
+timeout.onchange = timeoutToTimeinHandler;
+
+var apartmentType = document.querySelector('select[name="type"]');
+var pricePerNightInput = document.querySelector('#price');
+var apartmentTypeChangeHandler = function (evt) {
+  if (evt.target.value === 'flat') {
+    pricePerNightInput.min = 1000;
+  } else if (evt.target.value === 'bungalo') {
+    pricePerNightInput.min = 0;
+  } else if (evt.target.value === 'house') {
+    pricePerNightInput.min = 5000;
+  } else if (evt.target.value === 'palace') {
+    pricePerNightInput.min = 10000;
+  }
+};
+
+apartmentType.onchange = apartmentTypeChangeHandler;
+// надо понять, как обработать случай по умолчанию, когда комната по умолчанию одна, а гостей 3
+// тут хендер обрабатывает только связь этих полей при выборе количества комнат
+var roomNumber = document.querySelector('#room_number');
+var guestsNumber = document.querySelector('#capacity');
+var roomsForGuestsHandler = function (evt) {
+  if (evt.target.value === '100') {
+    guestsNumber.value = 0;
+  } else {
+    guestsNumber.value = evt.target.value;
+  }
+};
+roomNumber.onchange = roomsForGuestsHandler;
+
+// валидация
+
+// валидация заголовка
+var adTitle = document.querySelector('#title');
+var BORDER_WRONG = 'border: 2px solid red;';
+
+adTitle.addEventListener('invalid', function () {
+  adTitle.setAttribute('style', BORDER_WRONG);
+  if (adTitle.validity.tooShort) {
+    adTitle.setCustomValidity('Имя должно состоять минимум из 30 символов');
+  } else if (adTitle.validity.tooLong) {
+    adTitle.setCustomValidity('Имя не должно превышать 100 символов');
+  } else if (adTitle.validity.valueMissing) {
+    adTitle.setCustomValidity('Обязательное поле');
+  } else {
+    adTitle.setCustomValidity('');
+  }
+});
+// for Edge
+adTitle.addEventListener('input', function (evt) {
+  adTitle.setAttribute('style', BORDER_WRONG);
+  var target = evt.target;
+  if (target.value.length < 2) {
+    target.setCustomValidity('Имя должно состоять минимум из 30 символов');
+  } else if (adTitle.validity.tooLong) {
+    adTitle.setCustomValidity('Имя не должно превышать 100 символов');
+  } else if (adTitle.validity.valueMissing) {
+    adTitle.setCustomValidity('Обязательное поле');
+  } else {
+    adTitle.setCustomValidity('');
+  }
+});
+
+// валидация цены
+pricePerNightInput.addEventListener('invalid', function () {
+  pricePerNightInput.setAttribute('style', BORDER_WRONG);
+  if (pricePerNightInput.validity.rangeUnderflow) {
+    pricePerNightInput.setCustomValidity('Цена меньше минимальной');
+  } else if (pricePerNightInput.validity.rangeOverflow) {
+    pricePerNightInput.setCustomValidity('Цена больше максимальной');
+  } else if (pricePerNightInput.validity.valueMissing) {
+    pricePerNightInput.setCustomValidity('Обязательное поле');
+  } else {
+    pricePerNightInput.setCustomValidity('');
+  }
+});
+
+pricePerNightInput.addEventListener('input', function (evt) {
+  pricePerNightInput.setAttribute('style', BORDER_WRONG);
+  var target = evt.target;
+  if (target.value < pricePerNightInput.min) {
+    target.setCustomValidity('Цена меньше минимальной');
+  } else if (target.value > pricePerNightInput.max) {
+    pricePerNightInput.setCustomValidity('Цена больше максимальной');
+  } else if (pricePerNightInput.validity.valueMissing) {
+    pricePerNightInput.setCustomValidity('Обязательное поле');
+  } else {
+    pricePerNightInput.setCustomValidity('');
+  }
+});
+
+// как сделать валидацию связанных полей ? Неочевидный момент
