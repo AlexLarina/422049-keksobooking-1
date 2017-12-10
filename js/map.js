@@ -218,7 +218,6 @@ var timeout = document.querySelector('select[name="timeout"]');
 var apartmentType = document.querySelector('select[name="type"]');
 var price = document.querySelector('#price');
 var roomNumber = document.querySelector('#room_number');
-var guestsNumber = document.querySelector('#capacity');
 var adTitle = document.querySelector('#title');
 
 var BORDER_WRONG = 'border: 2px solid red;';
@@ -230,10 +229,10 @@ var offerTypesPrices = {
 };
 
 var roomsForGuests = {
-  '1': [1],
-  '2': [1, 2],
-  '3': [1, 2, 3],
-  '100': [0]
+  '1': ['1'],
+  '2': ['1', '2'],
+  '3': ['1', '2', '3'],
+  '100': ['0']
 };
 
 var timeHandler = function (evt, select) {
@@ -246,9 +245,10 @@ var apartmentTypeChangeHandler = function (evt) {
   price.min = offerTypesPrices[evt.target.value];
 };
 
+
 var roomsForGuestsHandler = function () {
   document.querySelectorAll('#capacity > option').forEach(function (item) {
-    item.disabled = !roomsForGuests[roomNumber.value].includes(item);
+    item.disabled = !roomsForGuests[roomNumber.value].includes(item.value);
   });
 };
 
@@ -261,7 +261,7 @@ timeout.addEventListener('change', function (evt) {
 });
 
 apartmentType.addEventListener('change', apartmentTypeChangeHandler);
-roomNumber.addEventListener('change', roomsForGuestsHandler);
+// roomNumber.addEventListener('change', roomsForGuestsHandler);
 
 // валидация
 
@@ -330,3 +330,4 @@ form.addEventListener('invalid', function (evt) {
   var target = evt.target;
   target.setAttribute('style', BORDER_WRONG);
 }, true);
+roomsForGuestsHandler();
