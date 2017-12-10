@@ -249,6 +249,7 @@ var apartmentTypeChangeHandler = function (evt) {
 var roomsForGuestsHandler = function () {
   document.querySelectorAll('#capacity > option').forEach(function (item) {
     item.disabled = !roomsForGuests[roomNumber.value].includes(item.value);
+    document.querySelector('#capacity').value = roomsForGuests[roomNumber.value][0];
   });
 };
 
@@ -261,7 +262,7 @@ timeout.addEventListener('change', function (evt) {
 });
 
 apartmentType.addEventListener('change', apartmentTypeChangeHandler);
-// roomNumber.addEventListener('change', roomsForGuestsHandler);
+roomNumber.addEventListener('change', roomsForGuestsHandler);
 
 // валидация
 
@@ -303,7 +304,7 @@ price.addEventListener('invalid', function () {
     price.setCustomValidity('Цена меньше минимальной: ' + price.min);
   } else if (price.validity.rangeOverflow) {
     // как и price.max не прокатил
-    price.setCustomValidity('Цена больше максимальной' + price.max);
+    price.setCustomValidity('Цена больше максимальной: ' + price.max);
   } else if (price.validity.valueMissing) {
     price.setCustomValidity('Обязательное поле');
   } else {
@@ -311,23 +312,10 @@ price.addEventListener('invalid', function () {
   }
 });
 
-price.addEventListener('invalid', function (evt) {
-  // price.setAttribute('style', BORDER_WRONG);
-  // pricePerNightInput.min = offerTypesPrices[evt.target.value];
-  var target = evt.target;
-  if (target.value < price.min) {
-    target.setCustomValidity('Цена меньше минимальной: ');
-  } else if (target.value > price.max) {
-    price.setCustomValidity('Цена больше максимальной');
-  } else if (price.validity.valueMissing) {
-    price.setCustomValidity('Обязательное поле');
-  } else {
-    price.setCustomValidity('');
-  }
-});
 
 form.addEventListener('invalid', function (evt) {
   var target = evt.target;
   target.setAttribute('style', BORDER_WRONG);
 }, true);
+
 roomsForGuestsHandler();
