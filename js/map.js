@@ -316,3 +316,4 @@ pricePerNightInput.addEventListener('input', function (evt) {
 });
 
 // как сделать валидацию связанных полей ? Неочевидный момент
+// need some help
