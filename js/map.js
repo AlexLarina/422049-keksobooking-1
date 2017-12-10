@@ -215,53 +215,60 @@ var initialAdress = document.querySelector('#address');
 initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
 var timein = document.querySelector('select[name="timein"]');
 var timeout = document.querySelector('select[name="timeout"]');
-
-// надо объединить эти хендлеры в один, но нет идей, как
-var timeinToTimeoutHandler = function (evt) {
-  timeout.value = evt.target.value;
-};
-var timeoutToTimeinHandler = function (evt) {
-  timein.value = evt.target.value;
-};
-timein.onchange = timeinToTimeoutHandler;
-timeout.onchange = timeoutToTimeinHandler;
-
 var apartmentType = document.querySelector('select[name="type"]');
-var pricePerNightInput = document.querySelector('#price');
-var apartmentTypeChangeHandler = function (evt) {
-  if (evt.target.value === 'flat') {
-    pricePerNightInput.min = 1000;
-  } else if (evt.target.value === 'bungalo') {
-    pricePerNightInput.min = 0;
-  } else if (evt.target.value === 'house') {
-    pricePerNightInput.min = 5000;
-  } else if (evt.target.value === 'palace') {
-    pricePerNightInput.min = 10000;
-  }
-};
-
-apartmentType.onchange = apartmentTypeChangeHandler;
-// надо понять, как обработать случай по умолчанию, когда комната по умолчанию одна, а гостей 3
-// тут хендер обрабатывает только связь этих полей при выборе количества комнат
+var price = document.querySelector('#price');
 var roomNumber = document.querySelector('#room_number');
 var guestsNumber = document.querySelector('#capacity');
-var roomsForGuestsHandler = function (evt) {
-  if (evt.target.value === '100') {
-    guestsNumber.value = 0;
-  } else {
-    guestsNumber.value = evt.target.value;
-  }
+var adTitle = document.querySelector('#title');
+
+var BORDER_WRONG = 'border: 2px solid red;';
+var offerTypesPrices = {
+  'flat': 1000,
+  'bungalo': 0,
+  'house': 5000,
+  'palace': 10000
 };
-roomNumber.onchange = roomsForGuestsHandler;
+
+var roomsForGuests = {
+  '1': [1],
+  '2': [1, 2],
+  '3': [1, 2, 3],
+  '100': [0]
+};
+
+var timeHandler = function (evt, select) {
+  select.value = evt.target.value;
+};
+
+// не уверена, что правильно сделала дефолтные значения
+var apartmentTypeChangeHandler = function (evt) {
+  price.placeholder = (offerTypesPrices['flat'] || offerTypesPrices['default']);
+  price.min = offerTypesPrices[evt.target.value];
+};
+
+var roomsForGuestsHandler = function () {
+  document.querySelectorAll('#capacity > option').forEach(function (item) {
+    item.disabled = !roomsForGuests[roomNumber.value].includes(item);
+  });
+};
+
+timein.addEventListener('change', function (evt) {
+  timeHandler(evt, timeout);
+});
+
+timeout.addEventListener('change', function (evt) {
+  timeHandler(evt, timein);
+});
+
+apartmentType.addEventListener('change', apartmentTypeChangeHandler);
+roomNumber.addEventListener('change', roomsForGuestsHandler);
 
 // валидация
 
 // валидация заголовка
-var adTitle = document.querySelector('#title');
-var BORDER_WRONG = 'border: 2px solid red;';
 
 adTitle.addEventListener('invalid', function () {
-  adTitle.setAttribute('style', BORDER_WRONG);
+  // adTitle.setAttribute('style', BORDER_WRONG);
   if (adTitle.validity.tooShort) {
     adTitle.setCustomValidity('Имя должно состоять минимум из 30 символов');
   } else if (adTitle.validity.tooLong) {
@@ -272,9 +279,10 @@ adTitle.addEventListener('invalid', function () {
     adTitle.setCustomValidity('');
   }
 });
+
 // for Edge
 adTitle.addEventListener('input', function (evt) {
-  adTitle.setAttribute('style', BORDER_WRONG);
+  // adTitle.setAttribute('style', BORDER_WRONG);
   var target = evt.target;
   if (target.value.length < 2) {
     target.setCustomValidity('Имя должно состоять минимум из 30 символов');
@@ -288,32 +296,37 @@ adTitle.addEventListener('input', function (evt) {
 });
 
 // валидация цены
-pricePerNightInput.addEventListener('invalid', function () {
-  pricePerNightInput.setAttribute('style', BORDER_WRONG);
-  if (pricePerNightInput.validity.rangeUnderflow) {
-    pricePerNightInput.setCustomValidity('Цена меньше минимальной');
-  } else if (pricePerNightInput.validity.rangeOverflow) {
-    pricePerNightInput.setCustomValidity('Цена больше максимальной');
-  } else if (pricePerNightInput.validity.valueMissing) {
-    pricePerNightInput.setCustomValidity('Обязательное поле');
+price.addEventListener('invalid', function () {
+  // price.setAttribute('style', BORDER_WRONG);
+  if (price.validity.rangeUnderflow) {
+    // price.min не прокатил
+    price.setCustomValidity('Цена меньше минимальной: ' + price.min);
+  } else if (price.validity.rangeOverflow) {
+    // как и price.max не прокатил
+    price.setCustomValidity('Цена больше максимальной' + price.max);
+  } else if (price.validity.valueMissing) {
+    price.setCustomValidity('Обязательное поле');
   } else {
-    pricePerNightInput.setCustomValidity('');
+    price.setCustomValidity('');
   }
 });
 
-pricePerNightInput.addEventListener('input', function (evt) {
-  pricePerNightInput.setAttribute('style', BORDER_WRONG);
+price.addEventListener('invalid', function (evt) {
+  // price.setAttribute('style', BORDER_WRONG);
+  // pricePerNightInput.min = offerTypesPrices[evt.target.value];
   var target = evt.target;
-  if (target.value < pricePerNightInput.min) {
-    target.setCustomValidity('Цена меньше минимальной');
-  } else if (target.value > pricePerNightInput.max) {
-    pricePerNightInput.setCustomValidity('Цена больше максимальной');
-  } else if (pricePerNightInput.validity.valueMissing) {
-    pricePerNightInput.setCustomValidity('Обязательное поле');
+  if (target.value < price.min) {
+    target.setCustomValidity('Цена меньше минимальной: ');
+  } else if (target.value > price.max) {
+    price.setCustomValidity('Цена больше максимальной');
+  } else if (price.validity.valueMissing) {
+    price.setCustomValidity('Обязательное поле');
   } else {
-    pricePerNightInput.setCustomValidity('');
+    price.setCustomValidity('');
   }
 });
 
-// как сделать валидацию связанных полей ? Неочевидный момент
-// need some help
+form.addEventListener('invalid', function (evt) {
+  var target = evt.target;
+  target.setAttribute('style', BORDER_WRONG);
+}, true);
