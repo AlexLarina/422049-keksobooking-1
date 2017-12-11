@@ -21,7 +21,7 @@
     return newArr;
   };
 
-  window.data = {
+  window.utils = {
     getRandFromRange: getRandFromRange,
     chooseFeatures: chooseFeatures,
   };

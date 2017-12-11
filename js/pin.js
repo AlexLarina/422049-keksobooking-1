@@ -32,7 +32,7 @@
   };
 
   window.pin = {
-    renderPin: renderPin,
-    deactivatePin: deactivatePin
+    render: renderPin,
+    deactivate: deactivatePin
   };
 })();

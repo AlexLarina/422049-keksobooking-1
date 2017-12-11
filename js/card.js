@@ -46,7 +46,8 @@
 
   var insertCard = function (ad) {
     card = renderCard(ad);
-    window.insertCardNode(card);
+    userDialog.insertBefore(card, userDialog.querySelector('.map__filters-container'));
+    // window.insertCardNode(card);
   };
 
   var popupCloseHandler = function () {
@@ -57,20 +58,20 @@
 
   var mousePopupCloseHandler = function () {
     popupCloseHandler();
-    window.pin.deactivatePin();
+    window.pin.deactivate();
   };
 
   var keyPopupCloseHandler = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       popupCloseHandler();
-      window.pin.deactivatePin();
+      window.pin.deactivate();
     }
   };
 
   var keyPopupInFocusCloseHandler = function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
       popupCloseHandler();
-      window.pin.deactivatePin();
+      window.pin.deactivate();
     }
 
     document.addEventListener('keydown', keyPopupCloseHandler);

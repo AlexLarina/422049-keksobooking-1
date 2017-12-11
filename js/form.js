@@ -3,7 +3,6 @@
 (function () {
 
   var initialAdress = document.querySelector('#address');
-  initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
   var form = document.querySelector('.notice__form');
   var timein = document.querySelector('select[name="timein"]');
   var timeout = document.querySelector('select[name="timeout"]');
@@ -11,8 +10,10 @@
   var price = document.querySelector('#price');
   var roomNumber = document.querySelector('#room_number');
   var adTitle = document.querySelector('#title');
+  var formFieldset = form.querySelectorAll('fieldset');
 
   var BORDER_WRONG = 'border: 2px solid red;';
+
   var offerTypesPrices = {
     'flat': 1000,
     'bungalo': 0,
@@ -106,6 +107,22 @@
     target.setAttribute('style', BORDER_WRONG);
   }, true);
 
+  var formActivate = function () {
+    form.classList.remove('notice__form--disabled');
+    formFieldset.forEach(function (item) {
+      item.removeAttribute('disabled', 'disabled');
+    });
+  };
+
+  var deactivateForm = function () {
+    form.classList.add('notice__form--disabled');
+    formFieldset.forEach(function (item) {
+      item.setAttribute('disabled', 'disabled');
+    });
+  };
+  deactivateForm();
+  initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
   roomsForGuestsHandler();
 
+  window.formActivate = formActivate;
 })();
