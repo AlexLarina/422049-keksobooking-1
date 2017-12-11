@@ -12,8 +12,8 @@
   var ESC_KEYCODE = 27;
 
   var mapCardTemplate = document.querySelector('template').content.querySelector('article.map__card');
-  var card;
   var userDialog = document.querySelector('.map');
+  var card;
 
   var renderCard = function (ad) {
     var mapCardElement = mapCardTemplate.cloneNode(true);
@@ -32,6 +32,7 @@
 
     var popupClose = mapCardElement.querySelector('.popup__close');
     popupClose.addEventListener('click', mousePopupCloseHandler);
+    popupClose.addEventListener('keydown', keyPopupCloseHandler);
     popupClose.addEventListener('keydown', keyPopupInFocusCloseHandler);
     return mapCardElement;
   };
@@ -43,9 +44,9 @@
     return liElem;
   };
 
-  var createCardNode = function (ad) {
+  var insertCard = function (ad) {
     card = renderCard(ad);
-    // а как вставить ноду карточки в модуль map.js ?
+    window.insertCardNode(card);
   };
 
   var popupCloseHandler = function () {
@@ -56,24 +57,24 @@
 
   var mousePopupCloseHandler = function () {
     popupCloseHandler();
-    window.map.deactivatePin();
+    window.pin.deactivatePin();
   };
 
   var keyPopupCloseHandler = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       popupCloseHandler();
-      window.map.deactivatePin();
+      window.pin.deactivatePin();
     }
   };
 
   var keyPopupInFocusCloseHandler = function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
       popupCloseHandler();
-      window.map.deactivatePin();
+      window.pin.deactivatePin();
     }
 
     document.addEventListener('keydown', keyPopupCloseHandler);
   };
 
-  window.createCardNode = createCardNode;
+  window.insertCard = insertCard;
 })();
