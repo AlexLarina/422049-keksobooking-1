@@ -7,12 +7,8 @@ var AdParams = {
   CHECK_IN_OUT_TIME: ['12:00', '13:00', '14:00'],
   FEATURES: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner']
 };
-var ApartmentTypeParams = {
-  flat: 'Квартира',
-  house: 'Дом',
-  bungalo: 'Бунгало'
-};
-var mapCardTemplate = document.querySelector('template').content.querySelector('article.map__card');
+
+// var mapCardTemplate = document.querySelector('template').content.querySelector('article.map__card');
 var userDialog = document.querySelector('.map');
 var mapPinsListElement = userDialog.querySelector('.map__pins');
 var mapPinTemplate = document.querySelector('template').content.querySelector('.map__pin');
@@ -20,15 +16,9 @@ var form = document.querySelector('.notice__form');
 var formFieldset = form.querySelectorAll('fieldset');
 var mainPin = document.querySelector('.map__pin--main');
 var ENTER_KEYCODE = 13;
-var ESC_KEYCODE = 27;
+// var ESC_KEYCODE = 27;
 
 // создание DOM-объъектов пинов и карточек объявлений
-var getFeature = function (feature) {
-  var liElem = document.createElement('li');
-  liElem.classList.add('feature', 'feature--' + feature);
-
-  return liElem;
-};
 
 var getRandFromRange = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -107,33 +97,12 @@ var renderPin = function (ad) {
 
   mapPinElement.setAttribute('style', 'left: ' + ad.location.x + 'px; ' + 'top: ' + ad.location.y + 'px; ');
   mapPinElement.querySelector('.map__pin img').setAttribute('src', ad.author.avatar);
-  mapPinElement.dataset.cardId = parseInt(ad.author.avatar.split(/\D+/g)[1], 10);
+  // mapPinElement.dataset.cardId = parseInt(ad.author.avatar.split(/\D+/g)[1], 10);
   mapPinElement.addEventListener('click', function (evt) {
     pinClickHandler(evt, ad);
   });
 
   return mapPinElement;
-};
-
-var renderCard = function (ad) {
-  var mapCardElement = mapCardTemplate.cloneNode(true);
-  mapCardElement.querySelector('.popup__avatar').setAttribute('src', '' + ad.author.avatar + '');
-  mapCardElement.querySelector('h3').textContent = ad.offer.title;
-  mapCardElement.querySelector('small').textContent = ad.offer.adress;
-  mapCardElement.querySelector('.popup__price').textContent = ad.offer.price + '\t\u20BD/ночь';
-  mapCardElement.querySelector('h4').textContent = ApartmentTypeParams[ad.offer.type];
-  mapCardElement.querySelector('h4 + p').textContent = ad.offer.rooms + ' комнат для ' + ad.offer.guests + ' гостей';
-  mapCardElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
-  var ulElem = mapCardElement.querySelector('.popup__features');
-  ad.offer.features.forEach(function (feature) {
-    ulElem.appendChild(getFeature(feature));
-  });
-  mapCardElement.querySelector('.popup__features + p').textContent = ad.offer.description;
-
-  var popupClose = mapCardElement.querySelector('.popup__close');
-  popupClose.addEventListener('click', mousePopupCloseHandler);
-  popupClose.addEventListener('keydown', keyPopupInFocusCloseHandler);
-  return mapCardElement;
 };
 
 // обработчики
@@ -142,14 +111,8 @@ var pinClickHandler = function (evt, ad) {
   deactivatePin(evt);
   var currentPin = evt.currentTarget;
   currentPin.classList.add('map__pin--active');
-  userDialog.insertBefore(renderCard(ad), userDialog.querySelector('.map__filters-container'));
+  userDialog.insertBefore(window.card.renderCard(ad), userDialog.querySelector('.map__filters-container'));
   // popupCloseHandler();
-};
-
-var popupCloseHandler = function () {
-  var popup = document.querySelector('.popup');
-  userDialog.removeChild(popup);
-  // popup.remove();
 };
 
 var deactivatePin = function () {
@@ -183,6 +146,60 @@ var keyMainPinHandler = function (evt) {
   }
 };
 
+// вызовы
+var advertismentArray = createAdArray(AD_NUMBER);
+deactivateForm();
+mainPin.addEventListener('mouseup', mouseMainPinHandler);
+mainPin.addEventListener('keydown', keyMainPinHandler);
+// document.addEventListener('keydown', keyPopupCloseHandler);
+
+// ------------- card.js -------------
+
+/* var ApartmentTypeParams = {
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalo: 'Бунгало'
+};
+
+var ENTER_KEYCODE = 13;
+var ESC_KEYCODE = 27;
+
+var mapCardTemplate = document.querySelector('template').content.querySelector('article.map__card');
+
+var renderCard = function (ad) {
+  var mapCardElement = mapCardTemplate.cloneNode(true);
+  mapCardElement.querySelector('.popup__avatar').setAttribute('src', '' + ad.author.avatar + '');
+  mapCardElement.querySelector('h3').textContent = ad.offer.title;
+  mapCardElement.querySelector('small').textContent = ad.offer.adress;
+  mapCardElement.querySelector('.popup__price').textContent = ad.offer.price + '\t\u20BD/ночь';
+  mapCardElement.querySelector('h4').textContent = ApartmentTypeParams[ad.offer.type];
+  mapCardElement.querySelector('h4 + p').textContent = ad.offer.rooms + ' комнат для ' + ad.offer.guests + ' гостей';
+  mapCardElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
+  var ulElem = mapCardElement.querySelector('.popup__features');
+  ad.offer.features.forEach(function (feature) {
+    ulElem.appendChild(getFeature(feature));
+  });
+  mapCardElement.querySelector('.popup__features + p').textContent = ad.offer.description;
+
+  var popupClose = mapCardElement.querySelector('.popup__close');
+  popupClose.addEventListener('click', mousePopupCloseHandler);
+  popupClose.addEventListener('keydown', keyPopupInFocusCloseHandler);
+  return mapCardElement;
+};
+
+var getFeature = function (feature) {
+  var liElem = document.createElement('li');
+  liElem.classList.add('feature', 'feature--' + feature);
+
+  return liElem;
+};
+
+var popupCloseHandler = function () {
+  var popup = document.querySelector('.popup');
+  userDialog.removeChild(popup);
+  // popup.remove();
+};
+
 var mousePopupCloseHandler = function () {
   popupCloseHandler();
   deactivatePin();
@@ -202,17 +219,17 @@ var keyPopupInFocusCloseHandler = function (evt) {
   }
 };
 
-// вызовы
-var advertismentArray = createAdArray(AD_NUMBER);
-deactivateForm();
-mainPin.addEventListener('mouseup', mouseMainPinHandler);
-mainPin.addEventListener('keydown', keyMainPinHandler);
 document.addEventListener('keydown', keyPopupCloseHandler);
+*/
 
-// форма
+// -----------------------------------
 
-var initialAdress = document.querySelector('#address');
+
+// ---------- form.js ------------- //
+
+/* var initialAdress = document.querySelector('#address');
 initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
+
 var timein = document.querySelector('select[name="timein"]');
 var timeout = document.querySelector('select[name="timeout"]');
 var apartmentType = document.querySelector('select[name="type"]');
@@ -298,12 +315,9 @@ adTitle.addEventListener('input', function (evt) {
 
 // валидация цены
 price.addEventListener('invalid', function () {
-  // price.setAttribute('style', BORDER_WRONG);
   if (price.validity.rangeUnderflow) {
-    // price.min не прокатил
     price.setCustomValidity('Цена меньше минимальной: ' + price.min);
   } else if (price.validity.rangeOverflow) {
-    // как и price.max не прокатил
     price.setCustomValidity('Цена больше максимальной: ' + price.max);
   } else if (price.validity.valueMissing) {
     price.setCustomValidity('Обязательное поле');
@@ -318,4 +332,5 @@ form.addEventListener('invalid', function (evt) {
   target.setAttribute('style', BORDER_WRONG);
 }, true);
 
-roomsForGuestsHandler();
+roomsForGuestsHandler(); */
+// ------------
