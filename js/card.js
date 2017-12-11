@@ -12,6 +12,7 @@
   var ESC_KEYCODE = 27;
 
   var mapCardTemplate = document.querySelector('template').content.querySelector('article.map__card');
+  var card;
   var userDialog = document.querySelector('.map');
 
   var renderCard = function (ad) {
@@ -42,6 +43,11 @@
     return liElem;
   };
 
+  var createCardNode = function (ad) {
+    card = renderCard(ad);
+    // а как вставить ноду карточки в модуль map.js ?
+  };
+
   var popupCloseHandler = function () {
     var popup = document.querySelector('.popup');
     userDialog.removeChild(popup);
@@ -69,5 +75,5 @@
     document.addEventListener('keydown', keyPopupCloseHandler);
   };
 
-  window.renderCard = renderCard;
+  window.createCardNode = createCardNode;
 })();

@@ -111,7 +111,7 @@ var pinClickHandler = function (evt, ad) {
   deactivatePin(evt);
   var currentPin = evt.currentTarget;
   currentPin.classList.add('map__pin--active');
-  userDialog.insertBefore(window.card.renderCard(ad), userDialog.querySelector('.map__filters-container'));
+  userDialog.insertBefore(window.card.createCardNode(ad), userDialog.querySelector('.map__filters-container'));
   // popupCloseHandler();
 };
 
