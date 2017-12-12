@@ -3,6 +3,8 @@
 (function () {
   var AD_NUMBER = 8;
   var ENTER_KEYCODE = 13;
+  var MAIN_PIN_HEIGT = 44;
+  var MAIN_PIN_WIDTH = 40;
 
   var userDialog = document.querySelector('.map');
   var mapPinsListElement = userDialog.querySelector('.map__pins');
@@ -31,14 +33,14 @@
 
   var mouseMainPinHandler = function () {
     mapActivate();
-    window.formActivate();
+    window.form.formActivate();
     mainPin.removeEventListener('mouseup', mouseMainPinHandler);
   };
 
   var keyMainPinHandler = function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
       mapActivate();
-      window.formActivate();
+      window.form.formActivate();
     }
   };
 
@@ -46,5 +48,52 @@
 
   mainPin.addEventListener('mouseup', mouseMainPinHandler);
   mainPin.addEventListener('keydown', keyMainPinHandler);
+
+  mainPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX + MAIN_PIN_WIDTH / 2,
+      y: evt.clientY + MAIN_PIN_HEIGT
+    };
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      var currentCoords = {
+        x: mainPin.offsetLeft - shift.x,
+        y: mainPin.offsetTop - shift.y
+      };
+
+      if (currentCoords.y < 100) {
+        currentCoords.y = 100;
+      } else if (currentCoords.y > 500) {
+        currentCoords.y = 500;
+      }
+
+      mainPin.style.top = currentCoords.y + 'px';
+      mainPin.style.left = currentCoords.x + 'px';
+
+      window.form.initialAdress.value = currentCoords.x + ', ' + currentCoords.y;
+    };
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
 
 })();

@@ -117,5 +117,9 @@
   deactivateForm();
   roomsForGuestsHandler();
 
-  window.formActivate = formActivate;
+  window.form = {
+    formActivate: formActivate,
+    initialAdress: initialAdress
+  };
+
 })();
