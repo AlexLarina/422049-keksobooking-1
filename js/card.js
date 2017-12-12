@@ -17,7 +17,7 @@
     var mapCardElement = mapCardTemplate.cloneNode(true);
     var ulElem = mapCardElement.querySelector('.popup__features');
     var popupClose = mapCardElement.querySelector('.popup__close');
-
+    removeCard();
     mapCardElement.querySelector('.popup__avatar').setAttribute('src', '' + ad.author.avatar + '');
     mapCardElement.querySelector('h3').textContent = ad.offer.title;
     mapCardElement.querySelector('small').textContent = ad.offer.adress;
@@ -44,6 +44,13 @@
   var insertCard = function (ad) {
     var card = renderCard(ad);
     userDialog.insertBefore(card, userDialog.querySelector('.map__filters-container'));
+  };
+
+  var removeCard = function () {
+    var popup = document.querySelector('.popup');
+    if (popup) {
+      userDialog.removeChild(popup);
+    }
   };
 
   var popupCloseHandler = function () {

@@ -16,7 +16,7 @@
   var pinClickHandler = function (evt, ad) {
     var currentPin = evt.currentTarget;
     if (currentPin.classList.contains('map__pin--active')) {
-      evt.removeEventListener('click', pinClickHandler);
+      return;
     }
     deactivatePin(evt);
     currentPin.classList.add('map__pin--active');
