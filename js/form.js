@@ -11,6 +11,7 @@
   var price = document.querySelector('#price');
   var roomNumber = document.querySelector('#room_number');
   var adTitle = document.querySelector('#title');
+  var capacity = document.querySelector('#capacity');
   var capacityItem = document.querySelectorAll('#capacity > option');
   var formFieldset = form.querySelectorAll('fieldset');
 
@@ -47,14 +48,13 @@
   };
 
   var apartmentTypeChangeHandler = function (evt) {
-    price.placeholder = (offerTypesPrices['flat'] || offerTypesPrices['default']);
     price.min = offerTypesPrices[evt.target.value];
   };
 
   var roomsForGuestsHandler = function () {
     capacityItem.forEach(function (item) {
       item.disabled = !roomsForGuests[roomNumber.value].includes(item.value);
-      document.querySelector('#capacity').value = roomsForGuests[roomNumber.value][0];
+      capacity.value = roomsForGuests[roomNumber.value][0];
     });
   };
 

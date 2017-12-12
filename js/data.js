@@ -45,8 +45,5 @@
     };
   };
 
-  window.data = {
-    AdParams: AdParams,
-    createAd: createAd
-  };
+  window.createAd = createAd;
 })();

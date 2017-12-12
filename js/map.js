@@ -11,7 +11,7 @@
   var createAdArray = function (adNumber) {
     var adArray = [];
     for (var i = 0; i < adNumber; i++) {
-      adArray[i] = window.data.createAd(i);
+      adArray[i] = window.createAd(i);
     }
     return adArray;
   };
@@ -32,6 +32,7 @@
   var mouseMainPinHandler = function () {
     mapActivate();
     window.formActivate();
+    mainPin.removeEventListener('mouseup', mouseMainPinHandler);
   };
 
   var keyMainPinHandler = function (evt) {
@@ -44,6 +45,6 @@
   var advertismentArray = createAdArray(AD_NUMBER);
 
   mainPin.addEventListener('mouseup', mouseMainPinHandler);
-  document.addEventListener('keydown', keyMainPinHandler);
+  mainPin.addEventListener('keydown', keyMainPinHandler);
 
 })();

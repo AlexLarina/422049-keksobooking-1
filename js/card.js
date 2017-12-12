@@ -15,6 +15,8 @@
 
   var renderCard = function (ad) {
     var mapCardElement = mapCardTemplate.cloneNode(true);
+    var ulElem = mapCardElement.querySelector('.popup__features');
+    var popupClose = mapCardElement.querySelector('.popup__close');
 
     mapCardElement.querySelector('.popup__avatar').setAttribute('src', '' + ad.author.avatar + '');
     mapCardElement.querySelector('h3').textContent = ad.offer.title;
@@ -23,17 +25,13 @@
     mapCardElement.querySelector('h4').textContent = ApartmentTypeParams[ad.offer.type];
     mapCardElement.querySelector('h4 + p').textContent = ad.offer.rooms + ' комнат для ' + ad.offer.guests + ' гостей';
     mapCardElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
-
-    var ulElem = mapCardElement.querySelector('.popup__features');
     ad.offer.features.forEach(function (feature) {
       ulElem.appendChild(getFeature(feature));
     });
     mapCardElement.querySelector('.popup__features + p').textContent = ad.offer.description;
-
-    var popupClose = mapCardElement.querySelector('.popup__close');
     popupClose.addEventListener('click', mousePopupCloseHandler);
-    document.addEventListener('keydown', keyPopupCloseHandler);
-    popupClose.addEventListener('keydown', keyPopupInFocusCloseHandler);
+    document.addEventListener('keydown', onPressEscHandler);
+    popupClose.addEventListener('keydown', onPressEnterHandler);
     return mapCardElement;
   };
 
@@ -58,14 +56,14 @@
     window.pin.deactivate();
   };
 
-  var keyPopupCloseHandler = function (evt) {
+  var onPressEscHandler = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       popupCloseHandler();
       window.pin.deactivate();
     }
   };
 
-  var keyPopupInFocusCloseHandler = function (evt) {
+  var onPressEnterHandler = function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
       popupCloseHandler();
       window.pin.deactivate();
