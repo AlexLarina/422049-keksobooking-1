@@ -5,7 +5,7 @@
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
-  var chooseFeatures = function (length, array, unique) {
+  var chooseUniqueFromArray = function (length, array, unique) {
     var newArr = [];
 
     while (newArr.length < length) {
@@ -23,6 +23,6 @@
 
   window.utils = {
     getRandFromRange: getRandFromRange,
-    chooseFeatures: chooseFeatures,
+    chooseUniqueFromArray: chooseUniqueFromArray,
   };
 })();
