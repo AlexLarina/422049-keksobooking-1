@@ -2,13 +2,13 @@
 
 (function () {
 
-  var AD_NUMBER = 8;
+  /* var AD_NUMBER = 8;
   var AdParams = {
     TITLES: ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'],
     TYPE: ['flat', 'house', 'bungalo'],
     CHECK_IN_OUT_TIME: ['12:00', '13:00', '14:00'],
     FEATURES: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner']
-  };
+  };*/
 
   var userDialog = document.querySelector('.map');
   var mapPinsListElement = userDialog.querySelector('.map__pins');
@@ -26,15 +26,15 @@
         avatar: 'img/avatars/user0' + (index + 1) + '.png'
       },
       offer: {
-        title: AdParams.TITLES[index],
+        title: window.data.AdParams.TITLES[index],
         adress: xCoord + ', ' + yCoord,
         price: window.utils.getRandFromRange(1000, 1000000),
-        type: AdParams.TYPE[window.utils.getRandFromRange(0, AdParams.TYPE.length)],
+        type: window.data.AdParams.TYPE[window.utils.getRandFromRange(0, window.data.AdParams.TYPE.length)],
         rooms: window.utils.getRandFromRange(1, 5),
         guests: window.utils.getRandFromRange(1, 20),
-        checkin: AdParams.CHECK_IN_OUT_TIME[window.utils.getRandFromRange(0, AdParams.CHECK_IN_OUT_TIME.length - 1)],
-        checkout: AdParams.CHECK_IN_OUT_TIME[window.utils.getRandFromRange(0, AdParams.CHECK_IN_OUT_TIME.length - 1)],
-        features: window.utils.chooseFeatures(window.utils.getRandFromRange(0, AdParams.FEATURES.length), AdParams.FEATURES, true),
+        checkin: window.data.AdParams.CHECK_IN_OUT_TIME[window.utils.getRandFromRange(0, window.data.AdParams.CHECK_IN_OUT_TIME.length - 1)],
+        checkout: window.data.AdParams.CHECK_IN_OUT_TIME[window.utils.getRandFromRange(0, window.data.AdParams.CHECK_IN_OUT_TIME.length - 1)],
+        features: window.utils.chooseFeatures(window.utils.getRandFromRange(0, window.data.AdParams.FEATURES.length), window.data.AdParams.FEATURES, true),
         description: '',
         photos: []
       },
@@ -55,7 +55,7 @@
 
   var createFragment = function (render, adArray) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < AD_NUMBER; i++) {
+    for (var i = 0; i < window.data.AD_NUMBER; i++) {
       fragment.appendChild(render(adArray[i]));
     }
     return fragment;
@@ -96,7 +96,7 @@
     }
   };
 
-  var advertismentArray = createAdArray(AD_NUMBER);
+  var advertismentArray = createAdArray(window.data.AD_NUMBER);
   // deactivateForm();
   mainPin.addEventListener('mouseup', mouseMainPinHandler);
   mainPin.addEventListener('keydown', keyMainPinHandler);
