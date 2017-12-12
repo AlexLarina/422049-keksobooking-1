@@ -80,6 +80,13 @@
         currentCoords.y = 500;
       }
 
+      if (currentCoords.x < MAIN_PIN_WIDTH / 2) {
+        currentCoords.x = MAIN_PIN_WIDTH / 2;
+      } else if (currentCoords.x > (userDialog.offsetWidth - MAIN_PIN_WIDTH / 2)) {
+        currentCoords.x = userDialog.offsetWidth - MAIN_PIN_WIDTH / 2;
+      }
+
+      console.log('width = ' + userDialog.offsetWidth);
       mainPin.style.top = currentCoords.y + 'px';
       mainPin.style.left = currentCoords.x + 'px';
 
