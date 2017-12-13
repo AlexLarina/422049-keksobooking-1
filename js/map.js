@@ -4,11 +4,16 @@
   var AD_NUMBER = 8;
   var ENTER_KEYCODE = 13;
   var MAIN_PIN_WIDTH = 65;
-  var MAIN_PIN_HEIGHT = 90;
+  var MAIN_PIN_HEIGHT = 84;
 
   var userDialog = document.querySelector('.map');
   var mapPinsListElement = userDialog.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
+
+  var BoundaryCoords = {
+    Y_MIN: 100,
+    Y_MAX: 500
+  };
 
   var createAdArray = function (adNumber) {
     var adArray = [];
@@ -26,18 +31,7 @@
     return fragment;
   };
 
-  var getMainPinCoords = function () {
-    // console.log(mainPin.offsetLeft, mainPin.offsetLeft);
-    return {
-      x: mainPin.offsetLeft,
-      y: mainPin.offsetTop + MAIN_PIN_HEIGHT / 2
-    };
-  };
-
   var mapActivate = function () {
-    var adress = getMainPinCoords();
-
-    window.form.fillFormAdress(adress.x, adress.y);
     userDialog.classList.remove('map--faded');
     mapPinsListElement.appendChild(createFragment(window.pin.render, advertismentArray));
   };
@@ -64,8 +58,8 @@
     evt.preventDefault();
 
     var startCoords = {
-      x: evt.clientX + MAIN_PIN_WIDTH / 2,
-      y: evt.clientY + MAIN_PIN_HEIGHT
+      x: evt.clientX,
+      y: evt.clientY
     };
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
@@ -85,26 +79,29 @@
         y: mainPin.offsetTop - shift.y
       };
 
-      if (currentCoords.y < 100) {
-        currentCoords.y = 100 - MAIN_PIN_HEIGHT / 2;
+      var Corrections = {
+        x: MAIN_PIN_WIDTH / 2,
+        y: MAIN_PIN_HEIGHT / 2
+      };
+
+      if (currentCoords.y < BoundaryCoords.Y_MIN) {
+        currentCoords.y = BoundaryCoords.Y_MIN - Corrections.y;
       }
-      if (currentCoords.y > (500 - MAIN_PIN_HEIGHT / 2)) {
-        currentCoords.y = 500 - MAIN_PIN_HEIGHT / 2;
+      if (currentCoords.y > (BoundaryCoords.Y_MAX - Corrections.y)) {
+        currentCoords.y = BoundaryCoords.Y_MAX - Corrections.y;
       }
 
-      if (currentCoords.x < MAIN_PIN_WIDTH / 2) {
-        currentCoords.x = MAIN_PIN_WIDTH / 2;
+      if (currentCoords.x < Corrections.x) {
+        currentCoords.x = Corrections.x;
       }
-      if (currentCoords.x > (userDialog.offsetWidth - MAIN_PIN_WIDTH / 2)) {
-        currentCoords.x = userDialog.offsetWidth - MAIN_PIN_WIDTH / 2;
+      if (currentCoords.x > (userDialog.offsetWidth - Corrections.x)) {
+        currentCoords.x = userDialog.offsetWidth - Corrections.x;
       }
 
-      // console.log('width = ' + userDialog.offsetWidth);
       mainPin.style.top = currentCoords.y + 'px';
       mainPin.style.left = currentCoords.x + 'px';
 
-      window.form.fillFormAdress();
-      // window.form.initialAdress.value = currentCoords.x + ', ' + (currentCoords.y + MAIN_PIN_HEIGHT / 2);
+      window.form.fillAdress(currentCoords.x, currentCoords.y);
     };
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
@@ -117,7 +114,5 @@
     document.addEventListener('mouseup', onMouseUp);
 
   });
-
-  window.getMainPinCoords = getMainPinCoords;
 
 })();
