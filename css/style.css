@@ -847,3 +847,20 @@ textarea:focus
 {
     background-position: -10px -10px;
 }
+
+// проверка позиции пина
+.map{
+  position: relative;
+}
+.line{
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  border: 1px solid red;
+}
+.line--top{
+  top: 100px;
+}
+.line--bottom{
+  top: 500px;
+}

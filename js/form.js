@@ -43,6 +43,11 @@
     });
   };
 
+  var fillFormAdress = function () {
+    var formAdress = window.getMainPinCoords();
+    initialAdress.value = formAdress.x + ', ' + formAdress.y;
+  };
+
   var timeHandler = function (evt, select) {
     select.value = evt.target.value;
   };
@@ -113,13 +118,15 @@
     target.setAttribute('style', BORDER_WRONG);
   }, true);
 
-  initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
+  // initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
+  // fillAdress(initialAdress, window.map.x, window.map.y);
   deactivateForm();
   roomsForGuestsHandler();
 
   window.form = {
-    formActivate: formActivate,
-    initialAdress: initialAdress
+    activate: formActivate,
+    fillFormAdress: fillFormAdress
+    // initialAdress: initialAdress
   };
 
 })();
