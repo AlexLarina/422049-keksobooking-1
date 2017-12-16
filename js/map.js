@@ -83,10 +83,10 @@
       var yCorrection = MAIN_PIN_HEIGHT / 2;
 
       if (currentCoords.y < BoundaryCoords.Y_MIN) {
-        currentCoords.y = BoundaryCoords.Y_MIN;
+        currentCoords.y = BoundaryCoords.Y_MIN - yCorrection;
       }
       if (currentCoords.y > (BoundaryCoords.Y_MAX - yCorrection)) {
-        currentCoords.y = BoundaryCoords.Y_MAX;
+        currentCoords.y = BoundaryCoords.Y_MAX - yCorrection;
       }
 
       if (currentCoords.x < xCorrection) {
@@ -99,7 +99,7 @@
       mainPin.style.top = currentCoords.y + 'px';
       mainPin.style.left = currentCoords.x + 'px';
 
-      window.form.fillAdress(currentCoords.x, currentCoords.y);
+      window.form.fillAdress(currentCoords.x, (currentCoords.y + yCorrection));
     };
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
