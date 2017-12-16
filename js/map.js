@@ -82,7 +82,7 @@
       var xCorrection = MAIN_PIN_WIDTH / 2;
       var yCorrection = MAIN_PIN_HEIGHT / 2;
 
-      if (currentCoords.y < BoundaryCoords.Y_MIN) {
+      if (currentCoords.y < (BoundaryCoords.Y_MIN - yCorrection)) {
         currentCoords.y = BoundaryCoords.Y_MIN - yCorrection;
       }
       if (currentCoords.y > (BoundaryCoords.Y_MAX - yCorrection)) {
