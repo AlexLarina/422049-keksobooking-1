@@ -81,19 +81,22 @@
 
       var xCorrection = MAIN_PIN_WIDTH / 2;
       var yCorrection = MAIN_PIN_HEIGHT / 2;
+      var borderTop = BoundaryCoords.Y_MIN - yCorrection;
+      var borderBottom = BoundaryCoords.Y_MAX - yCorrection;
+      var borderRight = userDialog.offsetWidth - xCorrection;
 
-      if (currentCoords.y < (BoundaryCoords.Y_MIN - yCorrection)) {
-        currentCoords.y = BoundaryCoords.Y_MIN - yCorrection;
+      if (currentCoords.y < borderTop) {
+        currentCoords.y = borderTop;
       }
-      if (currentCoords.y > (BoundaryCoords.Y_MAX - yCorrection)) {
-        currentCoords.y = BoundaryCoords.Y_MAX - yCorrection;
+      if (currentCoords.y > borderBottom) {
+        currentCoords.y = borderBottom;
       }
 
       if (currentCoords.x < xCorrection) {
         currentCoords.x = xCorrection;
       }
-      if (currentCoords.x > (userDialog.offsetWidth - xCorrection)) {
-        currentCoords.x = userDialog.offsetWidth - xCorrection;
+      if (currentCoords.x > borderRight) {
+        currentCoords.x = borderRight;
       }
 
       mainPin.style.top = currentCoords.y + 'px';
