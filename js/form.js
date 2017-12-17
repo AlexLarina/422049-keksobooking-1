@@ -43,6 +43,10 @@
     });
   };
 
+  var fillAdress = function (x, y) {
+    initialAdress.value = x + ', ' + y;
+  };
+
   var timeHandler = function (evt, select) {
     select.value = evt.target.value;
   };
@@ -117,5 +121,9 @@
   deactivateForm();
   roomsForGuestsHandler();
 
-  window.formActivate = formActivate;
+  window.form = {
+    activate: formActivate,
+    fillAdress: fillAdress
+  };
+
 })();
