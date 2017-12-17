@@ -847,19 +847,3 @@ textarea:focus
 {
     background-position: -10px -10px;
 }
-
-.map{
-  position: relative;
-}
-.line{
-  position: absolute;
-  z-index: 1;
-  width: 100%;
-  border: 1px solid red;
-}
-.line--top{
-  top: 100px;
-}
-.line--bottom{
-  top: 500px;
-}
