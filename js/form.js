@@ -79,23 +79,10 @@
     });
   };
 
-  timein.addEventListener('change', function () {
-    window.synchronizeFields(timein, timeout, timeValues, timeValues, syncValues);
-    // timeHandler(evt, timeout);
-  });
-
-  timeout.addEventListener('change', function () {
-    window.synchronizeFields(timeout, timein, timeValues, timeValues, syncValues);
-    // timeHandler(evt, timein);
-  });
-
-  apartmentType.addEventListener('change', function () {
-    window.synchronizeFields(apartmentType, price, offerTypes, offerPrices, syncValueWithMin);
-  });
-
-  roomNumber.addEventListener('change', function () {
-    window.synchronizeFields(roomNumber, capacity, rooms, guests, syncValues);
-  });
+  window.synchronizeFields(timein, timeout, timeValues, timeValues, syncValues);
+  window.synchronizeFields(timeout, timein, timeValues, timeValues, syncValues);
+  window.synchronizeFields(apartmentType, price, offerTypes, offerPrices, syncValueWithMin);
+  window.synchronizeFields(roomNumber, capacity, rooms, guests, syncValues);
 
   adTitle.addEventListener('invalid', function () {
     if (adTitle.validity.tooShort) {
