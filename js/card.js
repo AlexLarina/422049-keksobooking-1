@@ -78,5 +78,6 @@
 
   };
 
+  // window.renderCard = renderCard;
   window.insertCard = insertCard;
 })();

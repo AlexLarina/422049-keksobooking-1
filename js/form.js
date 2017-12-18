@@ -5,9 +5,9 @@
 
   var initialAdress = document.querySelector('#address');
   var form = document.querySelector('.notice__form');
-  var timein = document.querySelector('select[name="timein"]');
-  var timeout = document.querySelector('select[name="timeout"]');
-  var apartmentType = document.querySelector('select[name="type"]');
+  var timein = document.querySelector('#timein');
+  var timeout = document.querySelector('#timeout');
+  var apartmentType = document.querySelector('#type');
   var price = document.querySelector('#price');
   var roomNumber = document.querySelector('#room_number');
   var adTitle = document.querySelector('#title');
@@ -15,12 +15,17 @@
   var capacityItem = document.querySelectorAll('#capacity > option');
   var formFieldset = form.querySelectorAll('fieldset');
 
-  var offerTypesPrices = {
+  var timeValues = ['12:00', '13:00', '14:00'];
+  var offerTypes = ['flat', 'bungalo', 'house', 'palace'];
+  var offerPrices = [1000, 0, 5000, 10000];
+  var rooms = ['1', '2', '3', '100'];
+  var guests = ['1', '2', '3', '0'];
+  /* var offerTypesPrices = {
     'flat': 1000,
     'bungalo': 0,
     'house': 5000,
     'palace': 10000
-  };
+  };*/
 
   var roomsForGuests = {
     '1': ['1'],
@@ -47,13 +52,25 @@
     initialAdress.value = x + ', ' + y;
   };
 
-  var timeHandler = function (evt, select) {
+  /* var timeHandler = function (evt, select) {
     select.value = evt.target.value;
+  }; */
+
+  // синхронизация
+  var syncValues = function (element, value) {
+    element.value = value;
   };
 
-  var apartmentTypeChangeHandler = function (evt) {
-    price.min = offerTypesPrices[evt.target.value];
+  var syncValueWithMin = function (element, value) {
+    element.min = value;
+    if (element.placeholder) {
+      element.placeholder = value;
+    }
   };
+  //
+  /* var apartmentTypeChangeHandler = function (evt) {
+    price.min = offerTypesPrices[evt.target.value];
+  }; */
 
   var roomsForGuestsHandler = function () {
     capacityItem.forEach(function (item) {
@@ -62,16 +79,10 @@
     });
   };
 
-  timein.addEventListener('change', function (evt) {
-    timeHandler(evt, timeout);
-  });
-
-  timeout.addEventListener('change', function (evt) {
-    timeHandler(evt, timein);
-  });
-
-  apartmentType.addEventListener('change', apartmentTypeChangeHandler);
-  roomNumber.addEventListener('change', roomsForGuestsHandler);
+  window.synchronizeFields(timein, timeout, timeValues, timeValues, syncValues);
+  window.synchronizeFields(timeout, timein, timeValues, timeValues, syncValues);
+  window.synchronizeFields(apartmentType, price, offerTypes, offerPrices, syncValueWithMin);
+  window.synchronizeFields(roomNumber, capacity, rooms, guests, syncValues);
 
   adTitle.addEventListener('invalid', function () {
     if (adTitle.validity.tooShort) {
