@@ -31,9 +31,12 @@
     return fragment;
   };
 
-  var mapActivate = function () {
+  var mapActivate = function (data) {
     userDialog.classList.remove('map--faded');
-    mapPinsListElement.appendChild(createFragment(window.pin.render, advertismentArray));
+    var ads = createAdArray(data);
+    mapPinsListElement.appendChild(createFragment(window.pin.render, ads));
+    console.log(ads);
+    // mapPinsListElement.appendChild(createFragment(window.pin.render, advertismentArray));
   };
 
   var mouseMainPinHandler = function () {
@@ -49,7 +52,7 @@
     }
   };
 
-  var advertismentArray = createAdArray(AD_NUMBER);
+  // var advertismentArray = createAdArray(AD_NUMBER);
 
   mainPin.addEventListener('mouseup', mouseMainPinHandler);
   mainPin.addEventListener('keydown', keyMainPinHandler);
@@ -115,5 +118,16 @@
     document.addEventListener('mouseup', onMouseUp);
 
   });
+
+  /* var successHandler = function (dataloaded) {
+    var ads = createAdArray(dataloaded);
+    mapPinsListElement.appendChild(createFragment(window.pin.render, ads));
+  };*/
+
+  var errorHandler = function () {
+    console.log('smth went wrong');
+  };
+
+  window.backend.load(mapActivate, errorHandler);
 
 })();
