@@ -15,13 +15,13 @@
     Y_MAX: 500
   };
 
-  var createAdArray = function (adNumber) {
+  /* var createAdArray = function (adNumber) {
     var adArray = [];
     for (var i = 0; i < adNumber; i++) {
       adArray[i] = window.createAd(i);
     }
     return adArray;
-  };
+  };*/
 
   var createFragment = function (render, adArray) {
     var fragment = document.createDocumentFragment();
@@ -127,7 +127,8 @@
   };*/
 
   var errorHandler = function () {
-    console.log('smth went wrong');
+    var errorPopup = window.utils.errorPopup();
+    document.querySelector('body').appendChild(errorPopup);
   };
 
   // window.backend.load(successHandler, errorHandler);

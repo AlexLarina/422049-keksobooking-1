@@ -80,15 +80,17 @@
   };
 
   var errorHandler = function () {
-    console.log('smth went wrong');
+    var errorPopup = window.utils.errorPopup();
+    document.querySelector('body').appendChild(errorPopup);
+    // console.log('smth went wrong');
   };
 
   var successHandler = function () {
     // debugger;
-    var successPopup = window.util.popup();
+    var successPopup = window.utils.successPopup();
     document.querySelector('body').appendChild(successPopup);
     form.reset();
-    console.log('all is well');
+    // console.log('all is well');
   };
 
   window.synchronizeFields(timein, timeout, timeValues, timeValues, syncValues);
