@@ -33,21 +33,23 @@
 
   var mapActivate = function (data) {
     userDialog.classList.remove('map--faded');
-    var ads = createAdArray(data);
+    var ads = data.slice();
     mapPinsListElement.appendChild(createFragment(window.pin.render, ads));
-    console.log(ads);
+    // console.log(ads);
     // mapPinsListElement.appendChild(createFragment(window.pin.render, advertismentArray));
   };
 
   var mouseMainPinHandler = function () {
-    mapActivate();
+    // mapActivate();
+    window.backend.load(mapActivate, errorHandler);
     window.form.activate();
     mainPin.removeEventListener('mouseup', mouseMainPinHandler);
   };
 
   var keyMainPinHandler = function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
-      mapActivate();
+      window.backend.load(mapActivate, errorHandler);
+      // mapActivate();
       window.form.activate();
     }
   };
@@ -119,15 +121,15 @@
 
   });
 
-  /* var successHandler = function (dataloaded) {
-    var ads = createAdArray(dataloaded);
-    mapPinsListElement.appendChild(createFragment(window.pin.render, ads));
+  /* var successHandler = function () {
+    mainPin.addEventListener('mouseup', mouseMainPinHandler);
+    mainPin.addEventListener('keydown', keyMainPinHandler);
   };*/
 
   var errorHandler = function () {
     console.log('smth went wrong');
   };
 
-  window.backend.load(mapActivate, errorHandler);
+  // window.backend.load(successHandler, errorHandler);
 
 })();

@@ -79,6 +79,18 @@
     });
   };
 
+  var errorHandler = function () {
+    console.log('smth went wrong');
+  };
+
+  var successHandler = function () {
+    // debugger;
+    var successPopup = window.util.popup();
+    document.querySelector('body').appendChild(successPopup);
+    form.reset();
+    console.log('all is well');
+  };
+
   window.synchronizeFields(timein, timeout, timeValues, timeValues, syncValues);
   window.synchronizeFields(timeout, timein, timeValues, timeValues, syncValues);
   window.synchronizeFields(apartmentType, price, offerTypes, offerPrices, syncValueWithMin);
@@ -127,6 +139,11 @@
     var target = evt.target;
     target.setAttribute('style', BORDER_WRONG);
   }, true);
+
+  form.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(form), successHandler, errorHandler);
+    evt.preventDefault();
+  });
 
   initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
   deactivateForm();
