@@ -91,6 +91,8 @@
     document.querySelector('body').appendChild(successPopup);
     form.reset();
     initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
+    window.synchronizeFields(apartmentType, price, offerTypes, offerPrices, syncValueWithMin);
+    window.synchronizeFields(roomNumber, capacity, rooms, guests, syncValues);
     // console.log('all is well');
   };
 
