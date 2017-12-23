@@ -2,6 +2,7 @@
 
 (function () {
   var DATA_URL = 'https://1510.dump.academy/keksobooking';
+
   var setupRequest = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';

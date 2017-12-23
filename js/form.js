@@ -80,14 +80,14 @@
   };
 
   var errorHandler = function () {
-    var errorPopup = window.utils.errorPopup();
+    var errorPopup = window.message.createErrorPopup();
     document.querySelector('body').appendChild(errorPopup);
     // console.log('smth went wrong');
   };
 
   var successHandler = function () {
     // debugger;
-    var successPopup = window.utils.successPopup();
+    var successPopup = window.message.createSuccessPopup();
     document.querySelector('body').appendChild(successPopup);
     form.reset();
     // console.log('all is well');
