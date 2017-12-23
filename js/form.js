@@ -90,6 +90,7 @@
     var successPopup = window.message.createSuccessPopup();
     document.querySelector('body').appendChild(successPopup);
     form.reset();
+    initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
     // console.log('all is well');
   };
 
