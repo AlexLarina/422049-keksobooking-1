@@ -55,9 +55,9 @@
     return errorPopup;
   };
 
-  window.message = {
-    createSuccessPopup: createSuccessPopup,
-    createErrorPopup: createErrorPopup
+  window.popup = {
+    createSuccess: createSuccessPopup,
+    createError: createErrorPopup
   };
 
 })();

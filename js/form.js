@@ -18,8 +18,8 @@
   var timeValues = ['12:00', '13:00', '14:00'];
   var offerTypes = ['flat', 'bungalo', 'house', 'palace'];
   var offerPrices = [1000, 0, 5000, 10000];
-  var rooms = ['1', '2', '3', '100'];
-  var guests = ['1', '2', '3', '0'];
+  // var rooms = ['1', '2', '3', '100'];
+  // var guests = ['1', '2', '3', '0'];
   /* var offerTypesPrices = {
     'flat': 1000,
     'bungalo': 0,
@@ -80,26 +80,39 @@
   };
 
   var errorHandler = function () {
-    var errorPopup = window.message.createErrorPopup();
+    var errorPopup = window.popup.createError();
     document.querySelector('body').appendChild(errorPopup);
     // console.log('smth went wrong');
   };
 
   var successHandler = function () {
     // debugger;
-    var successPopup = window.message.createSuccessPopup();
+    var successPopup = window.popup.createSuccess();
     document.querySelector('body').appendChild(successPopup);
     form.reset();
-    initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
-    window.synchronizeFields(apartmentType, price, offerTypes, offerPrices, syncValueWithMin);
-    window.synchronizeFields(roomNumber, capacity, rooms, guests, syncValues);
+    // initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
+    // window.synchronizeFields(apartmentType, price, offerTypes, offerPrices, syncValueWithMin);
+    var index = offerTypes.indexOf(apartmentType.value);
+    syncValueWithMin(price, offerPrices[index]);
+    setDefaultForm();
+    // roomNumber.addEventListener('change', roomsForGuestsHandler);
+    // roomsForGuestsHandler();
     // console.log('all is well');
   };
 
-  window.synchronizeFields(timein, timeout, timeValues, timeValues, syncValues);
-  window.synchronizeFields(timeout, timein, timeValues, timeValues, syncValues);
-  window.synchronizeFields(apartmentType, price, offerTypes, offerPrices, syncValueWithMin);
-  window.synchronizeFields(roomNumber, capacity, rooms, guests, syncValues);
+  var setDefaultForm = function () {
+    window.synchronizeFields(timein, timeout, timeValues, timeValues, syncValues);
+    window.synchronizeFields(timeout, timein, timeValues, timeValues, syncValues);
+    window.synchronizeFields(apartmentType, price, offerTypes, offerPrices, syncValueWithMin);
+    roomNumber.addEventListener('change', roomsForGuestsHandler);
+    roomsForGuestsHandler();
+    initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
+  };
+  // window.synchronizeFields(timein, timeout, timeValues, timeValues, syncValues);
+  // window.synchronizeFields(timeout, timein, timeValues, timeValues, syncValues);
+  // window.synchronizeFields(apartmentType, price, offerTypes, offerPrices, syncValueWithMin);
+  // roomNumber.addEventListener('change', roomsForGuestsHandler);
+  // window.synchronizeFields(roomNumber, capacity, rooms, guests, syncValues);
 
   adTitle.addEventListener('invalid', function () {
     if (adTitle.validity.tooShort) {
@@ -124,6 +137,7 @@
       adTitle.setCustomValidity('Обязательное поле');
     } else {
       adTitle.setCustomValidity('');
+      adTitle.style.borderColor = '#d9d9d3';
     }
   });
 
@@ -136,6 +150,7 @@
       price.setCustomValidity('Обязательное поле');
     } else {
       price.setCustomValidity('');
+      price.style.borderColor = '#d9d9d3';
     }
   });
 
@@ -150,9 +165,10 @@
     evt.preventDefault();
   });
 
-  initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
+  // initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
+  setDefaultForm();
   deactivateForm();
-  roomsForGuestsHandler();
+  // roomsForGuestsHandler();
 
   window.form = {
     activate: formActivate,
