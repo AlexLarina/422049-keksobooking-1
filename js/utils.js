@@ -23,6 +23,6 @@
 
   window.utils = {
     getRandFromRange: getRandFromRange,
-    chooseUniqueFromArray: chooseUniqueFromArray,
+    chooseUniqueFromArray: chooseUniqueFromArray
   };
 })();

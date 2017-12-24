@@ -15,13 +15,13 @@
     Y_MAX: 500
   };
 
-  var createAdArray = function (adNumber) {
+  /* var createAdArray = function (adNumber) {
     var adArray = [];
     for (var i = 0; i < adNumber; i++) {
       adArray[i] = window.createAd(i);
     }
     return adArray;
-  };
+  };*/
 
   var createFragment = function (render, adArray) {
     var fragment = document.createDocumentFragment();
@@ -31,25 +31,30 @@
     return fragment;
   };
 
-  var mapActivate = function () {
+  var mapActivate = function (data) {
     userDialog.classList.remove('map--faded');
-    mapPinsListElement.appendChild(createFragment(window.pin.render, advertismentArray));
+    var ads = data.slice();
+    mapPinsListElement.appendChild(createFragment(window.pin.render, ads));
+    // console.log(ads);
+    // mapPinsListElement.appendChild(createFragment(window.pin.render, advertismentArray));
   };
 
   var mouseMainPinHandler = function () {
-    mapActivate();
+    // mapActivate();
+    window.backend.load(mapActivate, errorHandler);
     window.form.activate();
     mainPin.removeEventListener('mouseup', mouseMainPinHandler);
   };
 
   var keyMainPinHandler = function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
-      mapActivate();
+      window.backend.load(mapActivate, errorHandler);
+      // mapActivate();
       window.form.activate();
     }
   };
 
-  var advertismentArray = createAdArray(AD_NUMBER);
+  // var advertismentArray = createAdArray(AD_NUMBER);
 
   mainPin.addEventListener('mouseup', mouseMainPinHandler);
   mainPin.addEventListener('keydown', keyMainPinHandler);
@@ -115,5 +120,17 @@
     document.addEventListener('mouseup', onMouseUp);
 
   });
+
+  /* var successHandler = function () {
+    mainPin.addEventListener('mouseup', mouseMainPinHandler);
+    mainPin.addEventListener('keydown', keyMainPinHandler);
+  };*/
+
+  var errorHandler = function () {
+    var errorPopup = window.utils.errorPopup();
+    document.querySelector('body').appendChild(errorPopup);
+  };
+
+  // window.backend.load(successHandler, errorHandler);
 
 })();
