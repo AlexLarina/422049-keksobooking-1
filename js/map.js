@@ -47,7 +47,6 @@
 
     mapPinsListElement.appendChild(mainPin);
     mapPinsListElement.appendChild(createFragment(window.pin.render, filteredAds));
-    console.log('works');
   };
   filtersContainer.addEventListener('change', mapUpdateAfterFilter, true);
 
