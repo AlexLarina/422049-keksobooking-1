@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var AD_NUMBER = 8;
+  var AD_NUMBER = 5;
   var ENTER_KEYCODE = 13;
   var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HEIGHT = 84;

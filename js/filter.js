@@ -18,19 +18,20 @@
     return false;
   };*/
   var priceRange = {
-    'cheap': function (price) {
+    'low': function (price) {
       return price < MIN_PRICE;
     },
-    'medium': function (price) {
+    'middle': function (price) {
       return price >= MIN_PRICE && price <= MAX_PRICE;
     },
-    'expensive': function (price) {
+    'high': function (price) {
       return price > MAX_PRICE;
     }
   };
 
   var filterByPrice = function (ads, value) {
     return ads.filter(function (ad) {
+      console.log('all is bad');
       return priceRange[value](ad.offer.price);
       // return returnByPriceRange(ad.offer.price, value);
     });
@@ -70,7 +71,7 @@
 
     applicableFilters.forEach(function (currentFilter) {
       var filterType = currentFilter.name.split('-')[1];
-
+      console.log(filterType);
       /* if (filterType !== 'price' || isNaN(parseInt(currentFilter.value, 10))) {
         filteredArray = filterByValue(filteredArray, filterType, currentFilter.value);
       } else if (filterType === 'guests' && !isNaN(parseInt(currentFilter.value, 10))) {
@@ -79,7 +80,7 @@
         filteredArray = filterByPrice(filteredArray, currentFilter.value);
       }
     });*/
-      if (filterType !== 'price' || isNaN(parseInt(currentFilter.value, 10))) {
+      if (filterType !== 'price') {
         filteredArray = filterByValue(filteredArray, currentFilter.value, filterType);
       } else {
         filteredArray = filterByPrice(filteredArray, currentFilter.value);
