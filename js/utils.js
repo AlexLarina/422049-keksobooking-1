@@ -21,8 +21,15 @@
     return newArr;
   };
 
+  var removeNodes = function (node) {
+    while (node.hasChildNodes()) {
+      node.removeChild(node.lastChild);
+    }
+  };
+
   window.utils = {
     getRandFromRange: getRandFromRange,
-    chooseUniqueFromArray: chooseUniqueFromArray
+    chooseUniqueFromArray: chooseUniqueFromArray,
+    removeNodes: removeNodes
   };
 })();

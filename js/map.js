@@ -9,6 +9,7 @@
   var userDialog = document.querySelector('.map');
   var mapPinsListElement = userDialog.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
+  var adsArray = [];
 
   var BoundaryCoords = {
     Y_MIN: 100,
@@ -38,6 +39,15 @@
     // console.log(ads);
     // mapPinsListElement.appendChild(createFragment(window.pin.render, advertismentArray));
   };
+
+  var mapUpdateAfterFilter = function () {
+    var filteredAds = window.filtrate(adsArray);
+
+    window.utils.removeNodes(mapPinsListElement);
+    mapPinsListElement.appendChild(createFragment(window.pin.render, filteredAds));
+    console.log('works');
+  };
+  mapUpdateAfterFilter();
 
   var mouseMainPinHandler = function () {
     // mapActivate();
