@@ -31,7 +31,6 @@
 
   var filterByPrice = function (ads, value) {
     return ads.filter(function (ad) {
-      console.log('all is bad');
       return priceRange[value](ad.offer.price);
       // return returnByPriceRange(ad.offer.price, value);
     });
@@ -71,7 +70,6 @@
 
     applicableFilters.forEach(function (currentFilter) {
       var filterType = currentFilter.name.split('-')[1];
-      console.log(filterType);
       /* if (filterType !== 'price' || isNaN(parseInt(currentFilter.value, 10))) {
         filteredArray = filterByValue(filteredArray, filterType, currentFilter.value);
       } else if (filterType === 'guests' && !isNaN(parseInt(currentFilter.value, 10))) {
