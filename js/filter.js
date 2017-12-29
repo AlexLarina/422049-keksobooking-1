@@ -3,7 +3,7 @@
 (function () {
   var MIN_PRICE = 10000;
   var MAX_PRICE = 50000;
-
+  var FILTER_SWITCH_DELAY = 500;
   var filteredArray = [];
   var filtersContainer = document.querySelector('.map__filters');
   var filters = filtersContainer.querySelectorAll('.map__filter');
@@ -42,7 +42,8 @@
     });
   };
 
-  window.filtrate = function (ads) {
+  window.filtratePins = function (ads) {
+    var checkedFeatures = document.querySelectorAll('.map__filter-set input[type="checkbox"]:checked');
     filteredArray = ads.slice(0);
 
     var applicableFilters = Array.prototype.filter.call(filters, function (filter) {
@@ -50,9 +51,7 @@
     });
 
     applicableFilters.forEach(function (currentFilter) {
-      var filterType = currentFilter.name.split('-').splice(1, 1).toString();
-      var checkedFeatures = document.querySelectorAll('.map__filter-set input[type="checkbox"]:checked');
-      console.log(checkedFeatures.length);
+      var filterType = currentFilter.name.split('-')[1];
 
       if (filterType !== 'price' && filterType !== 'guests' || isNaN(parseInt(currentFilter.value, 10))) {
         filteredArray = filterByValue(filteredArray, filterType, currentFilter.value);
@@ -63,11 +62,15 @@
       }
     });
 
-    /* checkedFeatures.forEach(function (currentFeature) {
+    checkedFeatures.forEach(function (currentFeature) {
       filteredArray = filterByFeatures(filteredArray, currentFeature.value);
-    });*/
+    });
 
     return filteredArray;
   };
+
+  filtersContainer.addEventListener('change', function () {
+    window.utils.debounce(window.mapUpdate, FILTER_SWITCH_DELAY);
+  });
 
 })();

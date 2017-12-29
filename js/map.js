@@ -39,16 +39,16 @@
     // console.log(ads);
     // mapPinsListElement.appendChild(createFragment(window.pin.render, advertismentArray));
   };
-  var filtersContainer = document.querySelector('.map__filters');
+  // var filtersContainer = document.querySelector('.map__filters');
   var mapUpdateAfterFilter = function () {
-    var filteredAds = window.filtrate(ads);
+    var filteredAds = window.filtratePins(ads);
 
     window.utils.removeNodes(mapPinsListElement);
 
     mapPinsListElement.appendChild(mainPin);
     mapPinsListElement.appendChild(createFragment(window.pin.render, filteredAds));
   };
-  filtersContainer.addEventListener('change', mapUpdateAfterFilter, true);
+  // filtersContainer.addEventListener('change', mapUpdateAfterFilter, true);
 
   var mouseMainPinHandler = function () {
     // mapActivate();
@@ -143,5 +143,5 @@
   };
 
   // window.backend.load(successHandler, errorHandler);
-
+  window.mapUpdate = mapUpdateAfterFilter;
 })();
