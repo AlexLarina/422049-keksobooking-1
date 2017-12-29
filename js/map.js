@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var AD_NUMBER = 8;
+  var AD_NUMBER = 5;
   var ENTER_KEYCODE = 13;
   var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HEIGHT = 84;
@@ -9,6 +9,7 @@
   var userDialog = document.querySelector('.map');
   var mapPinsListElement = userDialog.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
+  var ads = [];
 
   var BoundaryCoords = {
     Y_MIN: 100,
@@ -25,7 +26,7 @@
 
   var createFragment = function (render, adArray) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < AD_NUMBER; i++) {
+    for (var i = 0; i < Math.min(AD_NUMBER, adArray.length); i++) {
       fragment.appendChild(render(adArray[i]));
     }
     return fragment;
@@ -33,11 +34,21 @@
 
   var mapActivate = function (data) {
     userDialog.classList.remove('map--faded');
-    var ads = data.slice();
+    ads = data.slice();
     mapPinsListElement.appendChild(createFragment(window.pin.render, ads));
     // console.log(ads);
     // mapPinsListElement.appendChild(createFragment(window.pin.render, advertismentArray));
   };
+  // var filtersContainer = document.querySelector('.map__filters');
+  var mapUpdateAfterFilter = function () {
+    var filteredAds = window.filtratePins(ads);
+
+    window.utils.removeNodes(mapPinsListElement);
+
+    mapPinsListElement.appendChild(mainPin);
+    mapPinsListElement.appendChild(createFragment(window.pin.render, filteredAds));
+  };
+  // filtersContainer.addEventListener('change', mapUpdateAfterFilter, true);
 
   var mouseMainPinHandler = function () {
     // mapActivate();
@@ -132,5 +143,5 @@
   };
 
   // window.backend.load(successHandler, errorHandler);
-
+  window.mapUpdate = mapUpdateAfterFilter;
 })();

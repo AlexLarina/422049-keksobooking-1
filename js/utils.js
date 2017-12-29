@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var lastTimeout = null;
+
   var getRandFromRange = function (min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
   };
@@ -21,8 +23,23 @@
     return newArr;
   };
 
+  var removeNodes = function (node) {
+    while (node.hasChildNodes()) {
+      node.removeChild(node.lastChild);
+    }
+  };
+
+  var debounce = function (callback, interval) {
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = window.setTimeout(callback, interval);
+  };
+
   window.utils = {
     getRandFromRange: getRandFromRange,
-    chooseUniqueFromArray: chooseUniqueFromArray
+    chooseUniqueFromArray: chooseUniqueFromArray,
+    removeNodes: removeNodes,
+    debounce: debounce
   };
 })();
