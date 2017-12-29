@@ -25,11 +25,12 @@
 
   window.filtrate = function (ads) {
     filteredArray = ads.slice(0);
+    var applicableFilters = Array.prototype.filter.call(filters, function (filter) {
+      return filter.value !== 'any';
+    });
 
-    filters.forEach(function (currentFilter) {
-      if (currentFilter.value !== 'any') {
-        filteredArray = filterByPrice(filteredArray, currentFilter.value);
-      }
+    applicableFilters.forEach(function (currentFilter) {
+      filteredArray = filterByPrice(filteredArray, currentFilter.value);
       console.log(filteredArray);
       return filteredArray;
     });
