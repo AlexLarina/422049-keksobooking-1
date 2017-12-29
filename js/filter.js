@@ -3,6 +3,7 @@
 (function () {
   var MIN_PRICE = 10000;
   var MAX_PRICE = 50000;
+
   var filteredArray = [];
   var filtersContainer = document.querySelector('.map__filters');
   var filters = filtersContainer.querySelectorAll('.map__filter');
@@ -31,9 +32,10 @@
 
     applicableFilters.forEach(function (currentFilter) {
       filteredArray = filterByPrice(filteredArray, currentFilter.value);
-      console.log(filteredArray);
-      return filteredArray;
     });
+
+    console.log(filteredArray);
+    return filteredArray;
   };
 
 })();

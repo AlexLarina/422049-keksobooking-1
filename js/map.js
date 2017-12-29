@@ -9,7 +9,7 @@
   var userDialog = document.querySelector('.map');
   var mapPinsListElement = userDialog.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
-  var adsArray = [];
+  var ads = [];
 
   var BoundaryCoords = {
     Y_MIN: 100,
@@ -26,7 +26,7 @@
 
   var createFragment = function (render, adArray) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < AD_NUMBER; i++) {
+    for (var i = 0; i < Math.min(AD_NUMBER, adArray.length); i++) {
       fragment.appendChild(render(adArray[i]));
     }
     return fragment;
@@ -34,20 +34,22 @@
 
   var mapActivate = function (data) {
     userDialog.classList.remove('map--faded');
-    var ads = data.slice();
+    ads = data.slice();
     mapPinsListElement.appendChild(createFragment(window.pin.render, ads));
     // console.log(ads);
     // mapPinsListElement.appendChild(createFragment(window.pin.render, advertismentArray));
   };
-
+  var filtersContainer = document.querySelector('.map__filters');
   var mapUpdateAfterFilter = function () {
-    var filteredAds = window.filtrate(adsArray);
+    var filteredAds = window.filtrate(ads);
 
     window.utils.removeNodes(mapPinsListElement);
+
+    mapPinsListElement.appendChild(mainPin);
     mapPinsListElement.appendChild(createFragment(window.pin.render, filteredAds));
     console.log('works');
   };
-  mapUpdateAfterFilter();
+  filtersContainer.addEventListener('change', mapUpdateAfterFilter, true);
 
   var mouseMainPinHandler = function () {
     // mapActivate();
