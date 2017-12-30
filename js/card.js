@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var ENTER_KEYCODE = 13;
   var ESC_KEYCODE = 27;
 
   var mapCardTemplate = document.querySelector('template').content.querySelector('article.map__card');
@@ -31,7 +30,6 @@
     mapCardElement.querySelector('.popup__features + p').textContent = ad.offer.description;
     popupClose.addEventListener('click', mousePopupCloseHandler);
     document.addEventListener('keydown', onPressEscHandler);
-    popupClose.addEventListener('keydown', onPressEnterHandler);
     return mapCardElement;
   };
 
@@ -70,14 +68,5 @@
     }
   };
 
-  var onPressEnterHandler = function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
-      popupCloseHandler();
-      window.pin.deactivate();
-    }
-
-  };
-
-  // window.renderCard = renderCard;
   window.insertCard = insertCard;
 })();
