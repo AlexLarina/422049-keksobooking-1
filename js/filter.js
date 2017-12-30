@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var Price = {
+  var PriceParams = {
     MIN: 10000,
     MAX: 50000
   };
@@ -13,13 +13,13 @@
 
   var priceRange = {
     'low': function (price) {
-      return price < Price.MIN;
+      return price < PriceParams.MIN;
     },
     'middle': function (price) {
-      return price >= Price.MIN && price <= Price.MAX;
+      return price >= PriceParams.MIN && price <= PriceParams.MAX;
     },
     'high': function (price) {
-      return price > Price.MAX;
+      return price > PriceParams.MAX;
     }
   };
 
