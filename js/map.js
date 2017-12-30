@@ -16,14 +16,6 @@
     Y_MAX: 500
   };
 
-  /* var createAdArray = function (adNumber) {
-    var adArray = [];
-    for (var i = 0; i < adNumber; i++) {
-      adArray[i] = window.createAd(i);
-    }
-    return adArray;
-  };*/
-
   var createFragment = function (render, adArray) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < Math.min(AD_NUMBER, adArray.length); i++) {
@@ -36,10 +28,8 @@
     userDialog.classList.remove('map--faded');
     ads = data.slice();
     mapPinsListElement.appendChild(createFragment(window.pin.render, ads));
-    // console.log(ads);
-    // mapPinsListElement.appendChild(createFragment(window.pin.render, advertismentArray));
   };
-  // var filtersContainer = document.querySelector('.map__filters');
+
   var mapUpdateAfterFilter = function () {
     var filteredAds = window.filtratePins(ads);
 
@@ -48,27 +38,22 @@
     mapPinsListElement.appendChild(mainPin);
     mapPinsListElement.appendChild(createFragment(window.pin.render, filteredAds));
   };
-  // filtersContainer.addEventListener('change', mapUpdateAfterFilter, true);
 
-  var mouseMainPinHandler = function () {
-    // mapActivate();
+  var mainPinClickHandler = function () {
     window.backend.load(mapActivate, errorHandler);
     window.form.activate();
-    mainPin.removeEventListener('mouseup', mouseMainPinHandler);
+    mainPin.removeEventListener('mouseup', mainPinClickHandler);
   };
 
-  var keyMainPinHandler = function (evt) {
+  var mainPinPressHandler = function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
       window.backend.load(mapActivate, errorHandler);
-      // mapActivate();
       window.form.activate();
     }
   };
 
-  // var advertismentArray = createAdArray(AD_NUMBER);
-
-  mainPin.addEventListener('mouseup', mouseMainPinHandler);
-  mainPin.addEventListener('keydown', keyMainPinHandler);
+  mainPin.addEventListener('mouseup', mainPinClickHandler);
+  mainPin.addEventListener('keydown', mainPinPressHandler);
 
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -132,16 +117,10 @@
 
   });
 
-  /* var successHandler = function () {
-    mainPin.addEventListener('mouseup', mouseMainPinHandler);
-    mainPin.addEventListener('keydown', keyMainPinHandler);
-  };*/
-
   var errorHandler = function () {
     var errorPopup = window.utils.errorPopup();
     document.querySelector('body').appendChild(errorPopup);
   };
 
-  // window.backend.load(successHandler, errorHandler);
   window.mapUpdate = mapUpdateAfterFilter;
 })();

@@ -3,28 +3,28 @@
 (function () {
   var DATA_URL = 'https://1510.dump.academy/keksobooking';
 
-  var setupRequest = function (onLoad, onError) {
+  var setupRequest = function (loadHandler, errorHandler) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
-        onLoad(xhr.response);
+        loadHandler(xhr.response);
       } else {
-        onError(xhr.response);
+        errorHandler(xhr.response);
       }
     });
     return xhr;
   };
 
-  var load = function (onLoad, onError) {
-    var xhr = setupRequest(onLoad, onError);
+  var load = function (loadHandler, errorHandler) {
+    var xhr = setupRequest(loadHandler, errorHandler);
     xhr.open('GET', DATA_URL + '/data');
     xhr.send();
   };
 
-  var save = function (data, onLoad, onError) {
-    var xhr = setupRequest(onLoad, onError);
+  var save = function (data, loadHandler, errorHandler) {
+    var xhr = setupRequest(loadHandler, errorHandler);
     xhr.open('POST', DATA_URL);
     xhr.send(data);
   };

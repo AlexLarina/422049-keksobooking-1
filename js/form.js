@@ -12,20 +12,12 @@
   var roomNumber = document.querySelector('#room_number');
   var adTitle = document.querySelector('#title');
   var capacity = document.querySelector('#capacity');
-  var capacityItem = document.querySelectorAll('#capacity > option');
-  var formFieldset = form.querySelectorAll('fieldset');
+  var capacityItems = document.querySelectorAll('#capacity > option');
+  var formFieldsets = form.querySelectorAll('fieldset');
 
   var timeValues = ['12:00', '13:00', '14:00'];
   var offerTypes = ['flat', 'bungalo', 'house', 'palace'];
   var offerPrices = [1000, 0, 5000, 10000];
-  // var rooms = ['1', '2', '3', '100'];
-  // var guests = ['1', '2', '3', '0'];
-  /* var offerTypesPrices = {
-    'flat': 1000,
-    'bungalo': 0,
-    'house': 5000,
-    'palace': 10000
-  };*/
 
   var roomsForGuests = {
     '1': ['1'],
@@ -34,16 +26,16 @@
     '100': ['0']
   };
 
-  var formActivate = function () {
+  var activateForm = function () {
     form.classList.remove('notice__form--disabled');
-    formFieldset.forEach(function (item) {
+    formFieldsets.forEach(function (item) {
       item.removeAttribute('disabled', 'disabled');
     });
   };
 
   var deactivateForm = function () {
     form.classList.add('notice__form--disabled');
-    formFieldset.forEach(function (item) {
+    formFieldsets.forEach(function (item) {
       item.setAttribute('disabled', 'disabled');
     });
   };
@@ -52,11 +44,6 @@
     initialAdress.value = x + ', ' + y;
   };
 
-  /* var timeHandler = function (evt, select) {
-    select.value = evt.target.value;
-  }; */
-
-  // синхронизация
   var syncValues = function (element, value) {
     element.value = value;
   };
@@ -67,13 +54,9 @@
       element.placeholder = value;
     }
   };
-  //
-  /* var apartmentTypeChangeHandler = function (evt) {
-    price.min = offerTypesPrices[evt.target.value];
-  }; */
 
   var roomsForGuestsHandler = function () {
-    capacityItem.forEach(function (item) {
+    capacityItems.forEach(function (item) {
       item.disabled = !roomsForGuests[roomNumber.value].includes(item.value);
       capacity.value = roomsForGuests[roomNumber.value][0];
     });
@@ -82,22 +65,15 @@
   var errorHandler = function () {
     var errorPopup = window.popup.createError();
     document.querySelector('body').appendChild(errorPopup);
-    // console.log('smth went wrong');
   };
 
   var successHandler = function () {
-    // debugger;
     var successPopup = window.popup.createSuccess();
     document.querySelector('body').appendChild(successPopup);
     form.reset();
-    // initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
-    // window.synchronizeFields(apartmentType, price, offerTypes, offerPrices, syncValueWithMin);
     var index = offerTypes.indexOf(apartmentType.value);
     syncValueWithMin(price, offerPrices[index]);
     setDefaultForm();
-    // roomNumber.addEventListener('change', roomsForGuestsHandler);
-    // roomsForGuestsHandler();
-    // console.log('all is well');
   };
 
   var setDefaultForm = function () {
@@ -108,14 +84,9 @@
     roomsForGuestsHandler();
     initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
   };
-  // window.synchronizeFields(timein, timeout, timeValues, timeValues, syncValues);
-  // window.synchronizeFields(timeout, timein, timeValues, timeValues, syncValues);
-  // window.synchronizeFields(apartmentType, price, offerTypes, offerPrices, syncValueWithMin);
-  // roomNumber.addEventListener('change', roomsForGuestsHandler);
-  // window.synchronizeFields(roomNumber, capacity, rooms, guests, syncValues);
 
   adTitle.addEventListener('invalid', function () {
-    if (adTitle.validity.tooShort) {
+    if (adTitle.validity.tooShort || adTitle.validity.patternMismatch) {
       adTitle.setCustomValidity('Имя должно состоять минимум из 30 символов');
     } else if (adTitle.validity.tooLong) {
       adTitle.setCustomValidity('Имя не должно превышать 100 символов');
@@ -123,21 +94,6 @@
       adTitle.setCustomValidity('Обязательное поле');
     } else {
       adTitle.setCustomValidity('');
-    }
-  });
-
-  // for Edge
-  adTitle.addEventListener('input', function (evt) {
-    var target = evt.target;
-    if (target.value.length < 2) {
-      target.setCustomValidity('Имя должно состоять минимум из 30 символов');
-    } else if (adTitle.validity.tooLong) {
-      adTitle.setCustomValidity('Имя не должно превышать 100 символов');
-    } else if (adTitle.validity.valueMissing) {
-      adTitle.setCustomValidity('Обязательное поле');
-    } else {
-      adTitle.setCustomValidity('');
-      adTitle.style.borderColor = '#d9d9d3';
     }
   });
 
@@ -165,13 +121,11 @@
     evt.preventDefault();
   });
 
-  // initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
   setDefaultForm();
   deactivateForm();
-  // roomsForGuestsHandler();
 
   window.form = {
-    activate: formActivate,
+    activate: activateForm,
     fillAdress: fillAdress
   };
 
