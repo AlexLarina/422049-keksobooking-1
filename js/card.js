@@ -70,6 +70,6 @@
 
   window.card = {
     insert: insertCard,
-    removeCard: removeCard
+    remove: removeCard
   };
 })();

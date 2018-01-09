@@ -34,7 +34,7 @@
     var filteredAds = window.filtratePins(ads);
 
     window.utils.removeNodes(mapPinsListElement);
-    window.card.removeCard();
+    window.card.remove();
     mapPinsListElement.appendChild(mainPin);
     mapPinsListElement.appendChild(createFragment(window.pin.render, filteredAds));
   };
