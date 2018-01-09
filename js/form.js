@@ -5,6 +5,7 @@
   var TIME_VALUES = ['12:00', '13:00', '14:00'];
   var OFFER_TYPES = ['flat', 'bungalo', 'house', 'palace'];
   var OFFER_PRICES = [1000, 0, 5000, 10000];
+  var MAIN_PIN_HEIGHT = 84;
 
   var ROOMS_FOR_GUESTS = {
     '1': ['1'],
@@ -27,6 +28,7 @@
   var noticeForm = document.querySelector('.notice__form');
   var avatarPreview = noticeForm.querySelector('.notice__preview img');
   var photoPreview = noticeForm.querySelector('.form__photo-container');
+  var mainPin = document.querySelector('.map__pin--main');
 
   var activateForm = function () {
     form.classList.remove('notice__form--disabled');
@@ -94,7 +96,7 @@
     roomNumber.addEventListener('change', roomsForGuestsHandler);
     roomsForGuestsHandler();
     // initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
-    fillAdress();
+    fillAdress(mainPin.offsetLeft, (mainPin.offsetTop + MAIN_PIN_HEIGHT / 2));
   };
 
   adTitle.addEventListener('invalid', function () {

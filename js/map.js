@@ -123,5 +123,4 @@
   };
 
   window.mapUpdate = mapUpdateAfterFilter;
-
 })();
