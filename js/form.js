@@ -14,6 +14,9 @@
   var capacity = document.querySelector('#capacity');
   var capacityItems = document.querySelectorAll('#capacity > option');
   var formFieldsets = form.querySelectorAll('fieldset');
+  var noticeForm = document.querySelector('.notice__form');
+  var avatarPreview = noticeForm.querySelector('.notice__preview img');
+  var photoPreview = noticeForm.querySelector('.form__photo-container');
 
   var timeValues = ['12:00', '13:00', '14:00'];
   var offerTypes = ['flat', 'bungalo', 'house', 'palace'];
@@ -37,6 +40,14 @@
     form.classList.add('notice__form--disabled');
     formFieldsets.forEach(function (item) {
       item.setAttribute('disabled', 'disabled');
+    });
+  };
+
+  var deletePreviews = function () {
+    var images = photoPreview.querySelectorAll('img');
+    avatarPreview.src = 'img/muffin.png';
+    images.forEach(function (image) {
+      photoPreview.removeChild(image);
     });
   };
 
@@ -73,6 +84,7 @@
     form.reset();
     var index = offerTypes.indexOf(apartmentType.value);
     syncValueWithMin(price, offerPrices[index]);
+    deletePreviews();
     setDefaultForm();
   };
 
