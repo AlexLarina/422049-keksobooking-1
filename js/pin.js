@@ -20,7 +20,7 @@
     }
     deactivatePin(evt);
     currentPin.classList.add('map__pin--active');
-    window.insertCard(ad);
+    window.card.insertCard(ad);
   };
 
   var deactivatePin = function () {

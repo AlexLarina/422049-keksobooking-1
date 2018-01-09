@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var popupTimeOut = 2000;
+  var POPUP_TIME_OUT = 2000;
 
   var createPopup = function (text) {
     var popup = document.createElement('div');
@@ -39,7 +39,7 @@
       if (popup) {
         popup.parentNode.removeChild(popup);
       }
-    }, popupTimeOut);
+    }, POPUP_TIME_OUT);
 
 
     return popup;

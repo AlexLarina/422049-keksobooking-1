@@ -5,6 +5,8 @@
   var ENTER_KEYCODE = 13;
   var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HEIGHT = 84;
+  var MAIN_PIN_LEFT = 600;
+  var MAIN_PIN_TOP = 375;
 
   var userDialog = document.querySelector('.map');
   var mapPinsListElement = userDialog.querySelector('.map__pins');
@@ -16,10 +18,10 @@
     Y_MAX: 500
   };
 
-  var createFragment = function (render, adArray) {
+  var createFragment = function (render, adsArray) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < Math.min(AD_NUMBER, adArray.length); i++) {
-      fragment.appendChild(render(adArray[i]));
+    for (var i = 0; i < Math.min(AD_NUMBER, adsArray.length); i++) {
+      fragment.appendChild(render(adsArray[i]));
     }
     return fragment;
   };
@@ -34,9 +36,15 @@
     var filteredAds = window.filtratePins(ads);
 
     window.utils.removeNodes(mapPinsListElement);
+    window.card.removeCard();
 
     mapPinsListElement.appendChild(mainPin);
     mapPinsListElement.appendChild(createFragment(window.pin.render, filteredAds));
+  };
+
+  var setDefaultMainPin = function () {
+    mainPin.style.left = MAIN_PIN_LEFT + 'px';
+    mainPin.style.top = MAIN_PIN_TOP + 'px';
   };
 
   var mainPinClickHandler = function () {
@@ -122,5 +130,9 @@
     document.querySelector('body').appendChild(errorPopup);
   };
 
-  window.mapUpdate = mapUpdateAfterFilter;
+  window.map = {
+    mapUpdate: mapUpdateAfterFilter,
+    setDefaultMainPin: setDefaultMainPin
+  };
+
 })();

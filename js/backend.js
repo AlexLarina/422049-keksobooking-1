@@ -2,13 +2,14 @@
 
 (function () {
   var DATA_URL = 'https://1510.dump.academy/keksobooking';
+  var OK_STATUS = 200;
 
   var setupRequest = function (loadHandler, errorHandler) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === OK_STATUS) {
         loadHandler(xhr.response);
       } else {
         errorHandler(xhr.response);
