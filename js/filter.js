@@ -67,7 +67,7 @@
   };
 
   filtersContainer.addEventListener('change', function () {
-    window.utils.debounce(window.map.mapUpdate, FILTER_SWITCH_DELAY);
+    window.utils.debounce(window.mapUpdate, FILTER_SWITCH_DELAY);
   });
 
 })();

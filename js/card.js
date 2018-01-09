@@ -17,7 +17,8 @@
     var ulElem = mapCardElement.querySelector('.popup__features');
     var popupClose = mapCardElement.querySelector('.popup__close');
     removeCard();
-    mapCardElement.querySelector('.popup__avatar').setAttribute('src', '' + ad.author.avatar + '');
+    // mapCardElement.querySelector('.popup__avatar').setAttribute('src', '' + ad.author.avatar + '');
+    mapCardElement.querySelector('.popup__avatar').src = ad.author.avatar;
     mapCardElement.querySelector('h3').textContent = ad.offer.title;
     mapCardElement.querySelector('small').textContent = ad.offer.adress;
     mapCardElement.querySelector('.popup__price').textContent = ad.offer.price + '\t\u20BD/ночь';
@@ -29,7 +30,7 @@
     });
     mapCardElement.querySelector('.popup__features + p').textContent = ad.offer.description;
     popupClose.addEventListener('click', mousePopupCloseHandler);
-    document.addEventListener('keydown', onPressEscHandler);
+    document.addEventListener('keydown', popupCloseEscHandler);
     return mapCardElement;
   };
 
@@ -61,12 +62,15 @@
     window.pin.deactivate();
   };
 
-  var onPressEscHandler = function (evt) {
+  var popupCloseEscHandler = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       popupCloseHandler();
       window.pin.deactivate();
     }
   };
 
-  window.insertCard = insertCard;
+  window.card = {
+    insertCard: insertCard,
+    removeCard: removeCard
+  };
 })();

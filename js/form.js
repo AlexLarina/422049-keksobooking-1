@@ -2,6 +2,16 @@
 
 (function () {
   var BORDER_WRONG = 'border: 2px solid red;';
+  var TIME_VALUES = ['12:00', '13:00', '14:00'];
+  var OFFER_TYPES = ['flat', 'bungalo', 'house', 'palace'];
+  var OFFER_PRICES = [1000, 0, 5000, 10000];
+
+  var ROOMS_FOR_GUESTS = {
+    '1': ['1'],
+    '2': ['1', '2'],
+    '3': ['1', '2', '3'],
+    '100': ['0']
+  };
 
   var initialAdress = document.querySelector('#address');
   var form = document.querySelector('.notice__form');
@@ -17,17 +27,6 @@
   var noticeForm = document.querySelector('.notice__form');
   var avatarPreview = noticeForm.querySelector('.notice__preview img');
   var photoPreview = noticeForm.querySelector('.form__photo-container');
-
-  var timeValues = ['12:00', '13:00', '14:00'];
-  var offerTypes = ['flat', 'bungalo', 'house', 'palace'];
-  var offerPrices = [1000, 0, 5000, 10000];
-
-  var roomsForGuests = {
-    '1': ['1'],
-    '2': ['1', '2'],
-    '3': ['1', '2', '3'],
-    '100': ['0']
-  };
 
   var activateForm = function () {
     form.classList.remove('notice__form--disabled');
@@ -68,8 +67,8 @@
 
   var roomsForGuestsHandler = function () {
     capacityItems.forEach(function (item) {
-      item.disabled = !roomsForGuests[roomNumber.value].includes(item.value);
-      capacity.value = roomsForGuests[roomNumber.value][0];
+      item.disabled = !ROOMS_FOR_GUESTS[roomNumber.value].includes(item.value);
+      capacity.value = ROOMS_FOR_GUESTS[roomNumber.value][0];
     });
   };
 
@@ -82,19 +81,20 @@
     var successPopup = window.popup.createSuccess();
     document.querySelector('body').appendChild(successPopup);
     form.reset();
-    var index = offerTypes.indexOf(apartmentType.value);
-    syncValueWithMin(price, offerPrices[index]);
+    var index = OFFER_TYPES.indexOf(apartmentType.value);
+    syncValueWithMin(price, OFFER_PRICES[index]);
     deletePreviews();
     setDefaultForm();
   };
 
   var setDefaultForm = function () {
-    window.synchronizeFields(timein, timeout, timeValues, timeValues, syncValues);
-    window.synchronizeFields(timeout, timein, timeValues, timeValues, syncValues);
-    window.synchronizeFields(apartmentType, price, offerTypes, offerPrices, syncValueWithMin);
+    window.synchronizeFields(timein, timeout, TIME_VALUES, TIME_VALUES, syncValues);
+    window.synchronizeFields(timeout, timein, TIME_VALUES, TIME_VALUES, syncValues);
+    window.synchronizeFields(apartmentType, price, OFFER_TYPES, OFFER_PRICES, syncValueWithMin);
     roomNumber.addEventListener('change', roomsForGuestsHandler);
     roomsForGuestsHandler();
-    initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
+    // initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
+    fillAdress();
   };
 
   adTitle.addEventListener('invalid', function () {

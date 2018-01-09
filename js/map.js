@@ -16,10 +16,10 @@
     Y_MAX: 500
   };
 
-  var createFragment = function (render, adArray) {
+  var createFragment = function (render, adsArray) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < Math.min(AD_NUMBER, adArray.length); i++) {
-      fragment.appendChild(render(adArray[i]));
+    for (var i = 0; i < Math.min(AD_NUMBER, adsArray.length); i++) {
+      fragment.appendChild(render(adsArray[i]));
     }
     return fragment;
   };
@@ -34,7 +34,7 @@
     var filteredAds = window.filtratePins(ads);
 
     window.utils.removeNodes(mapPinsListElement);
-
+    window.card.removeCard();
     mapPinsListElement.appendChild(mainPin);
     mapPinsListElement.appendChild(createFragment(window.pin.render, filteredAds));
   };
@@ -123,4 +123,5 @@
   };
 
   window.mapUpdate = mapUpdateAfterFilter;
+
 })();
