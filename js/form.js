@@ -95,7 +95,6 @@
     window.synchronizeFields(apartmentType, price, OFFER_TYPES, OFFER_PRICES, syncValueWithMin);
     roomNumber.addEventListener('change', roomsForGuestsHandler);
     roomsForGuestsHandler();
-    // initialAdress.value = '102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3';
     fillAdress(mainPin.offsetLeft, (mainPin.offsetTop + MAIN_PIN_HEIGHT / 2));
   };
 
