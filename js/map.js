@@ -16,10 +16,10 @@
     Y_MAX: 500
   };
 
-  var createFragment = function (render, adsArray) {
+  var createFragment = function (render, offers) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < Math.min(AD_NUMBER, adsArray.length); i++) {
-      fragment.appendChild(render(adsArray[i]));
+    for (var i = 0; i < Math.min(AD_NUMBER, offers.length); i++) {
+      fragment.appendChild(render(offers[i]));
     }
     return fragment;
   };
